@@ -1,5 +1,6 @@
 import app from "./app";
-const PORT = process.env.PORT || 3080;
+import { CSuccess } from "./utils/ChalkCustomStyles";
+const PORT = process.env.PORT || 3880;
 app.listen(PORT, () => {
-  console.log(`Server is running on the port ${PORT}`);
+  CSuccess(`Server is running on the port ${PORT}`);
 });

@@ -1,6 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+type UserDocument = Document & {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const userSchema = new mongoose.Schema<UserDocument>({
   name: String,
   email: {
     type: String,
@@ -13,4 +19,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export const User = mongoose.model("localAuthenticationSignup", userSchema);
+export const User = mongoose.model<UserDocument>(
+  "localAuthenticationSignup",
+  userSchema
+);

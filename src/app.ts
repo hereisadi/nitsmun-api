@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import dotEnv from "dotenv";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
+import cookieParser from "cookie-parser";
 // import ApiRoutes from "./routes/passport-models/ApiRoutes";
 import ApiRoutes from "./routes/ApiRoutes";
 import redirect from "./middlewares/Redirect";
@@ -18,6 +19,7 @@ dotEnv.config();
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json());
 app.use(morgan("combined"));
+app.use(cookieParser());
 app.use(cors());
 app.use(redirect);
 

@@ -23,3 +23,11 @@ export const CWarning = (message: string | object) => {
     )
   );
 };
+
+export const CInfo = (message: string | object) => {
+  console.log(
+    chalk.green.bold(
+      typeof message === "string" ? message : JSON.stringify(message)
+    )
+  );
+};

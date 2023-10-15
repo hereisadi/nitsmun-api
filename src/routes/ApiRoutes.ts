@@ -1,9 +1,11 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import home from "../controllers/Home";
 import passport from "passport";
 import swaggerJsdoc from "swagger-jsdoc";
 import { signup } from "../controllers/LocalAuthentication/Signup";
 import { login } from "../controllers/LocalAuthentication/Login";
+import { dashboard } from "../controllers/LocalAuthentication/Dashboard";
+import { AuthRequest } from "../utils/types/AuthRequest";
 
 const router = express.Router();
 
@@ -32,6 +34,7 @@ export const swaggerSpec = swaggerJsdoc(Options);
 //  *         description: The homepage.
 //  */
 
+// home route
 router.get("/", home);
 
 // Passport-GoogleSignIn routes
@@ -39,6 +42,7 @@ router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
+
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
@@ -47,6 +51,15 @@ router.get(
   })
 );
 
+// basic account creation and login endpoint
 router.post("/signup", signup);
 router.post("/login", login);
+
+// dashboard route
+const dashboardReqHandler = (req: Request, res: Response) => {
+  dashboard(req as AuthRequest, res);
+};
+
+router.get("/dashboard", dashboardReqHandler);
+
 export default router;

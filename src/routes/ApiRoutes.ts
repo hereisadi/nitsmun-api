@@ -7,6 +7,7 @@ import { login } from "../controllers/LocalAuthentication/Login";
 import { dashboard } from "../controllers/LocalAuthentication/Dashboard";
 import { AuthRequest } from "../utils/types/AuthRequest";
 import { ypController } from "../controllers/eventssignup/yp";
+import { allEvents } from "../controllers/ClientAllEventsFetch/allevents";
 
 const router = express.Router();
 
@@ -65,5 +66,11 @@ router.get("/dashboard", dashboardReqHandler);
 
 // yp event regsitration
 router.post("/reg/yp", ypController);
+
+// all events route for client side
+const AllEventsHandler = (req: Request, res: Response) => {
+  allEvents(req as AuthRequest, res);
+};
+router.post("/client/allevents", AllEventsHandler);
 
 export default router;

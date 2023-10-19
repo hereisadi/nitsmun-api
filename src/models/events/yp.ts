@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import moment from "moment-timezone";
 
 type UserDocument = Document & {
   college: string;
@@ -7,6 +8,9 @@ type UserDocument = Document & {
   payment: string;
   name: string;
   email: string;
+  regsiteredat: Date;
+  status: string;
+  cofirmedRegistrationAt: Date;
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
@@ -33,6 +37,19 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   payment: {
     type: String,
     required: true,
+  },
+  regsiteredat: {
+    type: Date,
+    default: moment.tz(Date.now(), "Asia/Kolkata"),
+    required: true,
+  },
+  status: {
+    type: String,
+    default: "pending",
+    required: true,
+  },
+  cofirmedRegistrationAt: {
+    type: Date,
   },
 });
 

@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
+// import crypto from "crypto";
 
-const YOUR_SECRET_KEY =
-  process.env.JWT_SECRET_KEY || crypto.randomBytes(64).toString("hex");
+const YOUR_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 export const verifyToken = (
   req: Request,

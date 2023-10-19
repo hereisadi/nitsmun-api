@@ -6,6 +6,7 @@ import { signup } from "../controllers/LocalAuthentication/Signup";
 import { login } from "../controllers/LocalAuthentication/Login";
 import { dashboard } from "../controllers/LocalAuthentication/Dashboard";
 import { AuthRequest } from "../utils/types/AuthRequest";
+import { ypController } from "../controllers/eventssignup/yp";
 
 const router = express.Router();
 
@@ -61,5 +62,8 @@ const dashboardReqHandler = (req: Request, res: Response) => {
 };
 
 router.get("/dashboard", dashboardReqHandler);
+
+// yp event regsitration
+router.post("/reg/yp", ypController);
 
 export default router;

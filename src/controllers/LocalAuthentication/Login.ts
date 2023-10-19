@@ -41,17 +41,17 @@ export const login = async (req: Request, res: Response) => {
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         YOUR_SECRET_KEY,
-        { expiresIn: "72h" }
+        { expiresIn: "720h" }
       );
 
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: false, //turn to true for prod
-        sameSite: "strict",
-        maxAge: 1000 * 60 * 60 * 150, // 150 hours
-      });
+      // res.cookie("token", token, {
+      //   httpOnly: true,
+      //   secure: true, //turn to true for prod
+      //   sameSite: "strict",
+      //   maxAge: 1000 * 60 * 60 * 150, // 150 hours
+      // });
 
-      res.status(200).json({ message: "Login successful" });
+      res.status(200).json({ message: "Login successful", token });
       CSuccess("login successful");
     } catch (error) {
       CError("Failed to log in");

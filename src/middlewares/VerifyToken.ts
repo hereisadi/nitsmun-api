@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 // import crypto from "crypto";
+import dotEnv from "dotenv";
+dotEnv.config();
 
-const YOUR_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+const YOUR_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 export const verifyToken = (
   req: Request,
@@ -30,7 +32,7 @@ export const verifyToken = (
   // }
 
   try {
-    const decoded = jwt.verify(token.split(" ")[1], YOUR_SECRET_KEY) as {
+    const decoded = jwt.verify(token.split(" ")[1], YOUR_SECRET_KEY!) as {
       userId: string;
       email: string;
     };

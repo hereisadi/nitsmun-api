@@ -3,10 +3,14 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { CError, CSuccess } from "../../utils/ChalkCustomStyles";
 import jwt from "jsonwebtoken";
+import dotEnv from "dotenv";
+dotEnv.config();
 // import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 
-const YOUR_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+const YOUR_SECRET_KEY = process.env.JWT_SECRET_KEY;
+// const YOUR_SECRET_KEY =
+//   process.env.JWT_SECRET_KEY || crypto.randomBytes(64).toString("hex");
 
 // when using export const login; we have to use import like: import {login} from './Login'
 // when exporting like export default login; we have to use import like: import login from './Login'
@@ -39,7 +43,7 @@ export const login = async (req: Request, res: Response) => {
 
       const token = jwt.sign(
         { userId: user._id, email: user.email },
-        YOUR_SECRET_KEY,
+        YOUR_SECRET_KEY!,
         { expiresIn: "720h" }
       );
 

@@ -10,6 +10,8 @@ import { ypController } from "../controllers/eventssignup/yp";
 import { allEvents } from "../controllers/ClientAllEventsFetch/allevents";
 import { getAllEvents } from "../controllers/admin/GetEvents";
 import { getAllCreatedAccounts } from "../controllers/superadmin/FetchAllSignedupAccount";
+import { elevateRole } from "../controllers/superadmin/ElevateRole";
+import { demoteRole } from "../controllers/superadmin/DemoteRole";
 
 const router = express.Router();
 
@@ -89,5 +91,17 @@ const SuperAdminAllSignedUpHandler = (req: Request, res: Response) => {
   getAllCreatedAccounts(req as AuthRequest, res);
 };
 router.get("/superadmin/getallaccounts", SuperAdminAllSignedUpHandler);
+
+// elevate user role to admin's route
+const ElevateRoleHandler = (req: Request, res: Response) => {
+  elevateRole(req as AuthRequest, res);
+};
+router.put("/elevate/admin", ElevateRoleHandler);
+
+// demote user role to client's route
+const DemoteRoleHandler = (req: Request, res: Response) => {
+  demoteRole(req as AuthRequest, res);
+};
+router.put("/demote/client", DemoteRoleHandler);
 
 export default router;

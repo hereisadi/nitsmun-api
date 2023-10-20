@@ -30,7 +30,8 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           .json({ error: "Please fill all required fields" });
       }
 
-      const existingSignup = await yp.findOne({ email });
+      // check if that email exists for that eventName if yes, then decline the registration
+      const existingSignup = await yp.findOne({ email, eventName });
 
       if (existingSignup) {
         return res

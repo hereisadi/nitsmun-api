@@ -12,6 +12,8 @@ import { getAllEvents } from "../controllers/admin/GetEvents";
 import { getAllCreatedAccounts } from "../controllers/superadmin/FetchAllSignedupAccount";
 import { elevateRole } from "../controllers/superadmin/ElevateRole";
 import { demoteRole } from "../controllers/superadmin/DemoteRole";
+import { confirmRegistration } from "../controllers/admin/ConfirmRegistration";
+import { declineRegistration } from "../controllers/admin/DeclineRegistration";
 
 const router = express.Router();
 
@@ -103,5 +105,17 @@ const DemoteRoleHandler = (req: Request, res: Response) => {
   demoteRole(req as AuthRequest, res);
 };
 router.put("/demote/client", DemoteRoleHandler);
+
+// confirm the registration
+const ConfirmRegHandler = (req: Request, res: Response) => {
+  confirmRegistration(req as AuthRequest, res);
+};
+router.put("/confirm/reg", ConfirmRegHandler);
+
+// decline the registration
+const DeclineRegHandler = (req: Request, res: Response) => {
+  declineRegistration(req as AuthRequest, res);
+};
+router.put("/decline/reg", DeclineRegHandler);
 
 export default router;

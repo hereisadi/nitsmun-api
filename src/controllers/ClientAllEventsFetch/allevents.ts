@@ -5,6 +5,7 @@ import { CError } from "../../utils/ChalkCustomStyles";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 import { AuthRequest } from "../../utils/types/AuthRequest";
+
 dotEnv.config();
 
 export const allEvents = async (req: AuthRequest, res: Response) => {
@@ -27,13 +28,25 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
 
         const { email, role } = user;
 
-        // finding registered events of the user
+        // finding registered events of the user with the role: client
         if (role === "client") {
           const ypEvents = await yp.find({ email: email });
           res.status(200).json({
             success: true,
             ypEvents,
           });
+        } else if (role === "admin") {
+          // find all the events registered by all the users
+          const eventName = "yp";
+          const ypEvents = await yp.find({ eventName: eventName });
+          res.status(200).json({
+            success: true,
+            ypEvents,
+          });
+        } else {
+          return res
+            .status(400)
+            .json({ error: "no such role found in the db" });
         }
       } catch (error) {
         res.status(400).json({

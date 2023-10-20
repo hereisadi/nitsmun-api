@@ -22,7 +22,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { email, name } = user;
+      const { email, name, role } = user;
 
       if (!college || !scholarid || !batch || !payment || !eventName) {
         return res
@@ -38,18 +38,24 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           .json({ error: "Signup with this email already exists" });
       }
 
-      const eventsignup = new yp({
-        name,
-        email,
-        batch,
-        payment,
-        college,
-        scholarid,
-        eventName,
-      });
+      if (role === "client") {
+        const eventsignup = new yp({
+          name,
+          email,
+          batch,
+          payment,
+          college,
+          scholarid,
+          eventName,
+        });
 
-      await eventsignup.save();
-      res.status(200).json({ message: "Event registration completed" });
+        await eventsignup.save();
+        res.status(200).json({ message: "Event registration completed" });
+      } else {
+        return res
+          .status(401)
+          .json({ error: "Admins are not allowed to register for an event" });
+      }
     } catch (e) {
       console.error(e);
       CError("Failed to register");

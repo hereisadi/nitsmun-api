@@ -25,14 +25,16 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
           return res.status(404).json({ error: "User not found" });
         }
 
-        const { email } = user;
+        const { email, role } = user;
 
         // finding registered events of the user
-        const ypEvents = await yp.find({ email: email });
-        res.status(200).json({
-          success: true,
-          ypEvents,
-        });
+        if (role === "client") {
+          const ypEvents = await yp.find({ email: email });
+          res.status(200).json({
+            success: true,
+            ypEvents,
+          });
+        }
       } catch (error) {
         res.status(400).json({
           success: false,

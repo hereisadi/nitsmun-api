@@ -3,10 +3,19 @@ import { yp } from "../../models/events/yp";
 import { CError } from "../../utils/ChalkCustomStyles";
 
 export const ypController = async (req: Request, res: Response) => {
-  const { college, scholarid, batch, payment, name, email } = req.body;
+  const { college, scholarid, batch, payment, name, email, eventName } =
+    req.body;
 
   try {
-    if (!college || !scholarid || !batch || !payment || !name || !email) {
+    if (
+      !college ||
+      !scholarid ||
+      !batch ||
+      !payment ||
+      !name ||
+      !email ||
+      eventName
+    ) {
       return res.status(400).json({ error: "Please fill all required fields" });
     }
 
@@ -25,6 +34,7 @@ export const ypController = async (req: Request, res: Response) => {
       payment,
       college,
       scholarid,
+      eventName,
     });
 
     await eventsignup.save();

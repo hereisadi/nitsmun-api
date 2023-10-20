@@ -10,10 +10,15 @@ type UserDocument = Document & {
   email: string;
   regsiteredat: string;
   status: string;
-  cofirmedRegistrationAt: Date;
+  cofirmedRegistrationAt: string;
+  eventName: string;
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
+  eventName: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
   },
@@ -40,7 +45,7 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   },
   regsiteredat: {
     type: String,
-    default: moment.tz("Asia/Kolkata").format("YY-MM-DD h:mma"),
+    default: moment.tz("Asia/Kolkata").format("DD-MM-YY h:mma"),
     required: true,
   },
   status: {
@@ -49,7 +54,7 @@ const ypSchema = new mongoose.Schema<UserDocument>({
     required: true,
   },
   cofirmedRegistrationAt: {
-    type: Date,
+    type: String,
   },
 });
 

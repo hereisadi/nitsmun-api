@@ -17,7 +17,7 @@ import { swaggerSpec } from "./routes/ApiRoutes";
 const app = express();
 dotEnv.config();
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 app.use(morgan("combined"));
 app.use(cookieParser());
 app.use(cors());

@@ -36,9 +36,15 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       if (existingSignup) {
         return res
           .status(400)
-          .json({ error: "Signup with this email already exists" });
+          .json({
+            error: `Signup with this ${email} for the event ${eventName}already exists`,
+          });
+      } else {
+        console.log(
+          `Signup with this ${email} for the event ${eventName}does not exists in the schema`
+        );
       }
-
+      console.log(existingSignup);
       if (role === "client") {
         const eventsignup = new yp({
           name,
@@ -49,7 +55,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           scholarid,
           eventName,
         });
-
+        console.log(eventsignup);
         await eventsignup.save();
         res.status(200).json({ message: "Event registration completed" });
       } else {

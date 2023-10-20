@@ -21,10 +21,12 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   },
   name: {
     type: String,
+    required: true,
   },
   email: {
     type: String,
     required: true,
+    unique: false,
   },
   scholarid: {
     type: String,

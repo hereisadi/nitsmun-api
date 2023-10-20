@@ -65,7 +65,10 @@ const dashboardReqHandler = (req: Request, res: Response) => {
 router.get("/dashboard", dashboardReqHandler);
 
 // yp event regsitration
-router.post("/reg/yp", ypController);
+const ypControllerHandler = (req: Request, res: Response) => {
+  ypController(req as AuthRequest, res);
+};
+router.post("/reg/yp", ypControllerHandler);
 
 // all events route for client side
 const AllEventsHandler = (req: Request, res: Response) => {

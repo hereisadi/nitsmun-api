@@ -8,6 +8,7 @@ import { dashboard } from "../controllers/LocalAuthentication/Dashboard";
 import { AuthRequest } from "../utils/types/AuthRequest";
 import { ypController } from "../controllers/eventssignup/yp";
 import { allEvents } from "../controllers/ClientAllEventsFetch/allevents";
+import { getAllEvents } from "../controllers/admin/GetEvents";
 
 const router = express.Router();
 
@@ -75,5 +76,11 @@ const AllEventsHandler = (req: Request, res: Response) => {
   allEvents(req as AuthRequest, res);
 };
 router.post("/client/allevents", AllEventsHandler);
+
+// fetch all events registered by all the users for admin side
+const AdminAllEventHandler = (req: Request, res: Response) => {
+  getAllEvents(req as AuthRequest, res);
+};
+router.get("/admin/getregistered/:eventName", AdminAllEventHandler);
 
 export default router;

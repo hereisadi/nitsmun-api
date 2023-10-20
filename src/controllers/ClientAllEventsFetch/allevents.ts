@@ -37,12 +37,13 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
           });
         } else if (role === "admin") {
           // find all the events registered by all the users
-          const eventName = "yp";
-          const ypEvents = await yp.find({ eventName: eventName });
-          res.status(200).json({
-            success: true,
-            ypEvents,
-          });
+          // const eventName = "yp";
+          // const ypEvents = await yp.find({ eventName: eventName });
+          // res.status(200).json({
+          //   success: true,
+          //   ypEvents,
+          // });
+          console.log("admin role");
         } else {
           return res
             .status(400)

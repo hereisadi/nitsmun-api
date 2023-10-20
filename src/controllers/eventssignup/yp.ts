@@ -37,11 +37,11 @@ export const ypController = async (req: AuthRequest, res: Response) => {
 
       if (existingSignup) {
         return res.status(400).json({
-          error: `Signup with this ${email} for the event ${eventName}already exists`,
+          error: `Signup with this email for the event already exists`,
         });
       } else {
         console.log(
-          `Signup with this ${email} for the event ${eventName}does not exists in the schema`
+          `Signup with this ${email} for the event ${eventName} does not exists in the schema`
         );
       }
       console.log(existingSignup);

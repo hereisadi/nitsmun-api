@@ -34,11 +34,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       const existingSignup = await yp.findOne({ email, eventName });
 
       if (existingSignup) {
-        return res
-          .status(400)
-          .json({
-            error: `Signup with this ${email} for the event ${eventName}already exists`,
-          });
+        return res.status(400).json({
+          error: `Signup with this ${email} for the event ${eventName}already exists`,
+        });
       } else {
         console.log(
           `Signup with this ${email} for the event ${eventName}does not exists in the schema`
@@ -55,13 +53,16 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           scholarid,
           eventName,
         });
-        console.log(eventsignup);
+        // console.log(eventsignup);
         await eventsignup.save();
         res.status(200).json({ message: "Event registration completed" });
       } else {
         return res
           .status(401)
-          .json({ error: "Admins are not allowed to register for an event" });
+          .json({
+            error:
+              "Admins and SuperAdmins are not allowed to register for an event",
+          });
       }
     } catch (e) {
       console.error(e);

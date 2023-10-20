@@ -9,6 +9,7 @@ import { AuthRequest } from "../utils/types/AuthRequest";
 import { ypController } from "../controllers/eventssignup/yp";
 import { allEvents } from "../controllers/ClientAllEventsFetch/allevents";
 import { getAllEvents } from "../controllers/admin/GetEvents";
+import { getAllCreatedAccounts } from "../controllers/superadmin/FetchAllSignedupAccount";
 
 const router = express.Router();
 
@@ -82,5 +83,11 @@ const AdminAllEventHandler = (req: Request, res: Response) => {
   getAllEvents(req as AuthRequest, res);
 };
 router.get("/admin/getregistered/:eventName", AdminAllEventHandler);
+
+// fetch all created accounts for superadmin side
+const SuperAdminAllSignedUpHandler = (req: Request, res: Response) => {
+  getAllCreatedAccounts(req as AuthRequest, res);
+};
+router.get("/superadmin/getallaccounts", SuperAdminAllSignedUpHandler);
 
 export default router;

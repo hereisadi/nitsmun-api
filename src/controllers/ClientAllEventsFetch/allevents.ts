@@ -35,7 +35,7 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
             success: true,
             ypEvents,
           });
-        } else if (role === "admin") {
+        } else if (role === "admin" || role === "superadmin") {
           // find all the events registered by all the users
           // const eventName = "yp";
           // const ypEvents = await yp.find({ eventName: eventName });
@@ -43,7 +43,7 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
           //   success: true,
           //   ypEvents,
           // });
-          console.log("admin role");
+          console.log("admin or superadmin role user have logged in");
         } else {
           return res
             .status(400)

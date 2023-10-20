@@ -1,11 +1,12 @@
 import { Response } from "express";
-import { verifyToken } from "../../middlewares/VerifyToken";
 import { AuthRequest } from "../../utils/types/AuthRequest";
+import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
-import { yp } from "../../models/events/yp";
-// import { CError } from "../../utils/ChalkCustomStyles";
 
-export const getAllEvents = (req: AuthRequest, res: Response) => {
+export const getAllCreatedAccounts = async (
+  req: AuthRequest,
+  res: Response
+) => {
   verifyToken(req, res, async () => {
     try {
       const userId = req.user?.userId;
@@ -21,19 +22,15 @@ export const getAllEvents = (req: AuthRequest, res: Response) => {
 
       const { role } = user;
 
-      if (role === "admin" || role === "superadmin") {
-        const { eventName } = req.params;
-        console.log(eventName);
-
-        const allSuchEvents = await yp.find({ eventName: eventName });
-
+      if (role === "superadmin") {
+        const allAccounts = await User.find({});
         res.status(200).json({
           success: true,
-          allSuchEvents,
+          allAccounts,
         });
       } else {
-        return res.status(400).json({
-          error: "You are not authorized to access this endpoint",
+        res.status(401).json({
+          error: "Not authorised to access this api endpoint",
         });
       }
     } catch (e) {

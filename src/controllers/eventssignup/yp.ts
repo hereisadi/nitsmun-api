@@ -32,6 +32,8 @@ export const ypController = async (req: AuthRequest, res: Response) => {
 
       // check if that email exists for that eventName if yes, then decline the registration
       const existingSignup = await yp.findOne({ email, eventName });
+      const indexes = await yp.collection.getIndexes();
+      console.log(indexes);
 
       if (existingSignup) {
         return res.status(400).json({
@@ -57,12 +59,10 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         await eventsignup.save();
         res.status(200).json({ message: "Event registration completed" });
       } else {
-        return res
-          .status(401)
-          .json({
-            error:
-              "Admins and SuperAdmins are not allowed to register for an event",
-          });
+        return res.status(401).json({
+          error:
+            "Admins and SuperAdmins are not allowed to register for an event",
+        });
       }
     } catch (e) {
       console.error(e);

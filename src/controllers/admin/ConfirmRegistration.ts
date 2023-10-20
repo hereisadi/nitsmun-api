@@ -3,6 +3,7 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 import { User } from "../../models/localAuthentication/User";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { yp } from "../../models/events/yp";
+import moment from "moment-timezone";
 
 export const confirmRegistration = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
@@ -33,6 +34,9 @@ export const confirmRegistration = (req: AuthRequest, res: Response) => {
 
         if (status === "pending") {
           reg.status = "confirmed";
+          reg.cofirmedRegistrationAt = moment
+            .tz("Asia/Kolkata")
+            .format("DD-MM-YY h:mma");
           await reg.save();
           res.status(200).json({
             success: true,

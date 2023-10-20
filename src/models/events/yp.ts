@@ -59,4 +59,6 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   },
 });
 
+ypSchema.index({ eventName: 1, email: 1 }, { unique: true });
+
 export const yp = mongoose.model<UserDocument>("ypRegistrations", ypSchema);

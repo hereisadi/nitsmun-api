@@ -25,7 +25,6 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   scholarid: {
     type: String,

@@ -8,7 +8,7 @@ type UserDocument = Document & {
   payment: string;
   name: string;
   email: string;
-  regsiteredat: Date;
+  regsiteredat: string;
   status: string;
   cofirmedRegistrationAt: Date;
 };
@@ -39,8 +39,8 @@ const ypSchema = new mongoose.Schema<UserDocument>({
     required: true,
   },
   regsiteredat: {
-    type: Date,
-    default: moment.tz(Date.now(), "Asia/Kolkata"),
+    type: String,
+    default: moment.tz("Asia/Kolkata").format("YY-MM-DD h:mma"),
     required: true,
   },
   status: {

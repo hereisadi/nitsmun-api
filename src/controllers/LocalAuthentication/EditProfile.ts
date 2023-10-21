@@ -27,7 +27,7 @@ export const editProfile = (req: AuthRequest, res: Response) => {
         return res.status(400).json({ error: "No entries to update" });
       }
 
-      if (newPwd.length < 8) {
+      if (newPwd !== "" && newPwd.length < 8) {
         return res
           .status(400)
           .json({ error: "Password should not be less than 8 characters" });

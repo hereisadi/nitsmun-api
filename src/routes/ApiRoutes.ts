@@ -15,6 +15,9 @@ import { demoteRole } from "../controllers/superadmin/DemoteRole";
 import { confirmRegistration } from "../controllers/admin/ConfirmRegistration";
 import { declineRegistration } from "../controllers/admin/DeclineRegistration";
 import { editProfile } from "../controllers/LocalAuthentication/EditProfile";
+import { getPendingRegistrations } from "../controllers/admin/GetPendingRegistrations";
+import { getConfirmedRegistrations } from "../controllers/admin/GetConfirmedRegistrations";
+import { getDeclinedRegistrations } from "../controllers/admin/GetDeclinedRegistrations";
 
 const router = express.Router();
 
@@ -124,5 +127,38 @@ const EditProfileHandler = (req: Request, res: Response) => {
   editProfile(req as AuthRequest, res);
 };
 router.put("/all/edit/profile", EditProfileHandler);
+
+// fetch pending registration
+const FetchPendingEventRegistrationsHandler = (req: Request, res: Response) => {
+  getPendingRegistrations(req as AuthRequest, res);
+};
+router.get(
+  "/admin/getpendingreg/:eventName",
+  FetchPendingEventRegistrationsHandler
+);
+
+// fetch confirmed registration
+const FetchConfirmedEventRegistrationsHandler = (
+  req: Request,
+  res: Response
+) => {
+  getConfirmedRegistrations(req as AuthRequest, res);
+};
+router.get(
+  "/admin/getconfirmedreg/:eventName",
+  FetchConfirmedEventRegistrationsHandler
+);
+
+// fetch declined registration
+const FetchDeclinedEventRegistrationsHandler = (
+  req: Request,
+  res: Response
+) => {
+  getDeclinedRegistrations(req as AuthRequest, res);
+};
+router.get(
+  "/admin/getdeclinedreg/:eventName",
+  FetchDeclinedEventRegistrationsHandler
+);
 
 export default router;

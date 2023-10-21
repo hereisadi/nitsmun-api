@@ -14,6 +14,7 @@ import { elevateRole } from "../controllers/superadmin/ElevateRole";
 import { demoteRole } from "../controllers/superadmin/DemoteRole";
 import { confirmRegistration } from "../controllers/admin/ConfirmRegistration";
 import { declineRegistration } from "../controllers/admin/DeclineRegistration";
+import { editProfile } from "../controllers/LocalAuthentication/EditProfile";
 
 const router = express.Router();
 
@@ -117,5 +118,11 @@ const DeclineRegHandler = (req: Request, res: Response) => {
   declineRegistration(req as AuthRequest, res);
 };
 router.put("/decline/reg", DeclineRegHandler);
+
+// edit profile
+const EditProfileHandler = (req: Request, res: Response) => {
+  editProfile(req as AuthRequest, res);
+};
+router.put("/all/edit/profile", EditProfileHandler);
 
 export default router;

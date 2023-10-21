@@ -175,12 +175,12 @@ router.post("/verifyotp", verifyOtp);
 const DeleteAnyAccountHandler = (req: Request, res: Response) => {
   deleteAnyAccount(req as AuthRequest, res);
 };
-router.post("/superadmin/deleteaccount", DeleteAnyAccountHandler);
+router.delete("/superadmin/deleteaccount", DeleteAnyAccountHandler);
 
 // delete account on its own after 15 days, after request has made
 const DeleteAnyAccountByClientHandler = (req: Request, res: Response) => {
   deleteAccountOnOwn(req as AuthRequest, res);
 };
-router.post("/client/deleteaccount", DeleteAnyAccountByClientHandler);
+router.delete("/client/deleteaccount", DeleteAnyAccountByClientHandler);
 
 export default router;

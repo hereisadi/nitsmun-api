@@ -20,6 +20,8 @@ import { getConfirmedRegistrations } from "../controllers/admin/GetConfirmedRegi
 import { getDeclinedRegistrations } from "../controllers/admin/GetDeclinedRegistrations";
 import { sendOtp } from "../controllers/LocalAuthentication/OTP/sendotp";
 import { verifyOtp } from "../controllers/LocalAuthentication/OTP/Verifyotp";
+import { deleteAnyAccount } from "../controllers/superadmin/DeleteAccount";
+import { deleteAccountOnOwn } from "../controllers/LocalAuthentication/DeleteAccountOnOwn";
 
 const router = express.Router();
 
@@ -168,5 +170,17 @@ router.post("/sendotp", sendOtp);
 
 //verify otp
 router.post("/verifyotp", verifyOtp);
+
+// Delete any account only for superadmin, only client role can be deleted
+const DeleteAnyAccountHandler = (req: Request, res: Response) => {
+  deleteAnyAccount(req as AuthRequest, res);
+};
+router.post("/superadmin/deleteaccount", DeleteAnyAccountHandler);
+
+// delete account on its own after 15 days, after request has made
+const DeleteAnyAccountByClientHandler = (req: Request, res: Response) => {
+  deleteAccountOnOwn(req as AuthRequest, res);
+};
+router.post("/client/deleteaccount", DeleteAnyAccountByClientHandler);
 
 export default router;

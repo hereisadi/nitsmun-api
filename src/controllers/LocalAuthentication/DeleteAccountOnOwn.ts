@@ -18,14 +18,25 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { role, email } = user;
+      const { role, email, deleteAccount } = user;
 
       if (role === "client") {
-        sendEmail(
-          email,
-          "Account Deletion Schedule",
-          `Your account will be deleted after 15 days. /n If you want to cancel the deletion, please contact the nitsmun web team. /n Thank you.`
-        );
+        if (deleteAccount === "no") {
+          user.deleteAccount = "scheduled";
+          await user.save();
+          sendEmail(
+            email,
+            "Account Deletion Schedule",
+            `Your account will be deleted after 15 days. \n If you want to cancel the deletion, please contact the nitsmun web team. \n Thank you.`
+          );
+          res.status(200).json({
+            message: "Account deletion scheduled successfully",
+          });
+        } else if (deleteAccount === "scheduled") {
+          res.status(401).json({
+            error: "Account deletion already scheduled",
+          });
+        }
 
         // delete the account after 15 days
         cron.schedule("0 0 */15 * *", async () => {

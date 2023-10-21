@@ -5,6 +5,7 @@ type UserDocument = Document & {
   email: string;
   password: string;
   role: string;
+  deleteAccount: string;
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -22,6 +23,10 @@ const userSchema = new mongoose.Schema<UserDocument>({
   password: {
     type: String,
     required: true,
+  },
+  deleteAccount: {
+    type: String,
+    default: "no",
   },
 });
 

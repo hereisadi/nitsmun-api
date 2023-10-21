@@ -5,6 +5,13 @@ import { OTP } from "../../../models/localAuthentication/OTP/otpmodel";
 export const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+
+    if (!email || !/@/.test(email)) {
+      return res.status(400).json({
+        error: "Invalid email format",
+      });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     sendEmail(email, "OTP for SignUp", `Your OTP is ${otp}`);

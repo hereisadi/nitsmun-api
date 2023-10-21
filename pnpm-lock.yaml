@@ -106,6 +106,9 @@ devDependencies:
   '@types/morgan':
     specifier: ^1.9.6
     version: 1.9.6
+  '@types/nodemailer':
+    specifier: ^6.4.13
+    version: 6.4.13
   '@types/passport-google-oauth2':
     specifier: ^0.1.6
     version: 0.1.6
@@ -617,6 +620,12 @@ packages:
     resolution: {integrity: sha512-SPlobFgbidfIeOYlzXiEjSYeIJiOCthv+9tSQVpvk4PAdIIc+2SmjNVzWXk9t0Y7dl73Zdf+OgXKHX9XtkqUpw==}
     dependencies:
       undici-types: 5.25.3
+
+  /@types/nodemailer@6.4.13:
+    resolution: {integrity: sha512-889Vq/77eEpidCwh52sVWpbnqQmIwL8yVBekNbrztVEaWKOCRH3Eq6hjIJh1jwsGDEAJEH0RR+YhpH9mfELLKA==}
+    dependencies:
+      '@types/node': 20.8.5
+    dev: true
 
   /@types/passport-google-oauth2@0.1.6:
     resolution: {integrity: sha512-rfNF4Zmm+Gi3GN7puKXWg28Uou76Uk7rtpTECE4tGLNycB9gOJewe8M/dF4ghb30M9dLRshU82jPdT0qK5JQGw==}

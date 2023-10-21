@@ -18,6 +18,8 @@ import { editProfile } from "../controllers/LocalAuthentication/EditProfile";
 import { getPendingRegistrations } from "../controllers/admin/GetPendingRegistrations";
 import { getConfirmedRegistrations } from "../controllers/admin/GetConfirmedRegistrations";
 import { getDeclinedRegistrations } from "../controllers/admin/GetDeclinedRegistrations";
+import { sendOtp } from "../controllers/LocalAuthentication/OTP/sendotp";
+import { verifyOtp } from "../controllers/LocalAuthentication/OTP/Verifyotp";
 
 const router = express.Router();
 
@@ -160,5 +162,11 @@ router.get(
   "/admin/getdeclinedreg/:eventName",
   FetchDeclinedEventRegistrationsHandler
 );
+
+//send otp
+router.post("/sendotp", sendOtp);
+
+//verify otp
+router.post("/verifyotp", verifyOtp);
 
 export default router;

@@ -51,12 +51,10 @@ export const deleteAnyAccount = (req: AuthRequest, res: Response) => {
           .status(200)
           .json({ message: "User deleted successfully", success: true });
       } else {
-        res
-          .status(401)
-          .json({
-            error: "Not authorized to use this api endpoint",
-            success: false,
-          });
+        res.status(401).json({
+          error: "Not authorized to use this api endpoint",
+          success: false,
+        });
       }
     } catch (error) {
       console.error(error);

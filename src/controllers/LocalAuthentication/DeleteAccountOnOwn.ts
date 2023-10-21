@@ -20,15 +20,15 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
 
       const { role, email } = user;
 
-      sendEmail(
-        email,
-        "Account Deletion Schedule",
-        `Your account will be deleted after 15 days. /n If you want to cancel the deletion, please contact the nitsmun web team. /n Thank you.`
-      );
+      if (role === "client") {
+        sendEmail(
+          email,
+          "Account Deletion Schedule",
+          `Your account will be deleted after 15 days. /n If you want to cancel the deletion, please contact the nitsmun web team. /n Thank you.`
+        );
 
-      // delete the account after 15 days
-      cron.schedule("0 0 */15 * *", async () => {
-        if (role === "client") {
+        // delete the account after 15 days
+        cron.schedule("0 0 */15 * *", async () => {
           await User.findOneAndDelete({ email });
           res
             .status(200)
@@ -38,13 +38,13 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
             "Account Deleted",
             `Your account has been deleted successfully`
           );
-        } else {
-          res.status(401).json({
-            success: false,
-            error: "Only users with the client role can be deleted. ",
-          });
-        }
-      });
+        });
+      } else {
+        res.status(401).json({
+          success: false,
+          error: "Only users with the client role can be deleted. ",
+        });
+      }
     } catch (e) {
       console.error(e);
       res

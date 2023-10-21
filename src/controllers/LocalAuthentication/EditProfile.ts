@@ -23,6 +23,10 @@ export const editProfile = (req: AuthRequest, res: Response) => {
 
       const { newName, newPwd, confirmNewPwd } = req.body; // entries subject to change
 
+      if (!newName && !newPwd && !confirmNewPwd) {
+        return res.status(400).json({ error: "No entries to update" });
+      }
+
       if (newPwd.length < 8) {
         return res
           .status(400)

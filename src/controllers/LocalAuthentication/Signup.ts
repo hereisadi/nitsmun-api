@@ -3,6 +3,9 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { CError } from "../../utils/ChalkCustomStyles";
 import { check, validationResult } from "express-validator";
+import { sanitizeInput, Globals } from "../../utils/Sanitize";
+
+Globals();
 
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -32,35 +35,35 @@ export const signup = async (req: Request, res: Response) => {
   }
 
   // sanitizing the user input
-  // const email = sanitizeInput(email);
-  // const name = sanitizeInput(name);
-  // const password = sanitizeInput(password);
-  // const confirmPassword = sanitizeInput(confirmPassword);
+  const Semail = sanitizeInput(email);
+  const Sname = sanitizeInput(name);
+  const Spassword = sanitizeInput(password);
+  const SconfirmPassword = sanitizeInput(confirmPassword);
 
   try {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!Sname || !Semail || !Spassword || !SconfirmPassword) {
       return res.status(400).json({ error: "Please fill all required fields" });
     }
 
-    if (password.length < 8) {
+    if (Spassword.length < 8) {
       return res
         .status(400)
         .json({ error: "Password should not be less than 8 characters" });
     }
 
-    if (password !== confirmPassword) {
+    if (Spassword !== SconfirmPassword) {
       return res.status(400).json({ error: "Passwords do not match" });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: Semail });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(Spassword, 10);
     const user = new User({
-      name,
-      email,
+      name: Sname,
+      email: Semail,
       password: hashedPassword,
     });
 

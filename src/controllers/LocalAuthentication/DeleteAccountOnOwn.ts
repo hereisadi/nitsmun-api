@@ -18,12 +18,11 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { role, email, deleteAccount } = user;
+      const { role, email, deleteAccount, _id } = user;
 
       if (role === "client") {
         if (deleteAccount === "no") {
-          user.deleteAccount = "scheduled";
-          await user.save();
+          await User.findByIdAndUpdate(_id, { deleteAccount: "scheduled" });
           sendEmail(
             email,
             "Account Deletion Schedule",

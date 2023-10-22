@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { CError, CSuccess } from "../../utils/ChalkCustomStyles";
 import jwt from "jsonwebtoken";
 import dotEnv from "dotenv";
+import { check, validationResult } from "express-validator";
 dotEnv.config();
 // import crypto from "crypto";
 import rateLimit from "express-rate-limit";
@@ -30,6 +31,24 @@ export const login = async (req: Request, res: Response) => {
   emailLimiter(req, res, async () => {
     const { email, password } = req.body;
 
+    // validation using express-validator
+    check("email").trim().isEmail().withMessage("Email is invalid").run(req);
+    check("password")
+      .trim()
+      .isLength({ min: 8 })
+      .withMessage("Password should be at least 8 characters long")
+      .run(req);
+
+    // throw errors with 400 status code
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    // sanitizing the email and password
+    // const sanitizedEmail = sanitizeInput(email);
+    // const sanitizedPassword = sanitizeInput(password);
+
     try {
       const user = await User.findOne({ email });
       if (!user) {
@@ -44,7 +63,7 @@ export const login = async (req: Request, res: Response) => {
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         YOUR_SECRET_KEY!,
-        { expiresIn: "720h" }
+        { algorithm: "ES512", expiresIn: "720h" }
       );
 
       // res.cookie("token", token, {
@@ -59,6 +78,7 @@ export const login = async (req: Request, res: Response) => {
     } catch (error) {
       CError("Failed to log in");
       res.status(500).json({ error: "Failed to log in" });
+      console.error(error);
     }
   });
 };

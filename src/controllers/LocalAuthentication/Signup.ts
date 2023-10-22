@@ -8,14 +8,14 @@ export const signup = async (req: Request, res: Response) => {
   const { name, email, password, confirmPassword } = req.body;
 
   // validation using express-validator
-  check("name").trim().notEmpty().withMessage("Name is required").run(req);
-  check("email").trim().isEmail().withMessage("Email is invalid").run(req);
-  check("password")
+  check(name).trim().notEmpty().withMessage("Name is required").run(req);
+  check(email).trim().isEmail().withMessage("Email is invalid").run(req);
+  check(password)
     .trim()
     .isLength({ min: 8 })
     .withMessage("Password should be at least 8 characters long")
     .run(req);
-  check("confirmPassword")
+  check(confirmPassword)
     .trim()
     .custom((value, { req }) => {
       if (value !== req.body.password) {

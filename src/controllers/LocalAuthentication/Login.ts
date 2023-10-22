@@ -32,8 +32,8 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // validation using express-validator
-    check("email").trim().isEmail().withMessage("Email is invalid").run(req);
-    check("password")
+    check(email).trim().isEmail().withMessage("Email is invalid").run(req);
+    check(password)
       .trim()
       .isLength({ min: 8 })
       .withMessage("Password should be at least 8 characters long")
@@ -63,7 +63,7 @@ export const login = async (req: Request, res: Response) => {
       const token = jwt.sign(
         { userId: user._id, email: user.email },
         YOUR_SECRET_KEY!,
-        { algorithm: "ES512", expiresIn: "720h" }
+        { expiresIn: "720h" }
       );
 
       // res.cookie("token", token, {

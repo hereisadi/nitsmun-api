@@ -1,1 +1,1 @@
-# Backend NodeJS Template with Typescript
+# NITSMUN REST API

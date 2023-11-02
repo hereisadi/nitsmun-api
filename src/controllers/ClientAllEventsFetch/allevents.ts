@@ -50,9 +50,10 @@ export const allEvents = async (req: AuthRequest, res: Response) => {
             .json({ error: "no such role found in the db" });
         }
       } catch (error) {
-        res.status(400).json({
+        console.error(error);
+        res.status(500).json({
           success: false,
-          error,
+          error: "Something went wrong",
         });
       }
     } else {

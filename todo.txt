@@ -1,0 +1,4 @@
+implement google, github signin using passport js
+add admin panel, basically mechanism to update the segments from backend itself rather manually pushing from frontend every time
+add email verification and forgot password mechanism get rid of otp thing; use magic link //done
+contact us backend api //done

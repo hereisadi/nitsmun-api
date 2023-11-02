@@ -40,6 +40,10 @@ export const getPendingRegistrations = (req: AuthRequest, res: Response) => {
       }
     } catch (e) {
       console.error("Somehtiing went wrong on the server side", e);
+      return res.status(500).json({
+        success: false,
+        error: "Something went wrong",
+      });
     }
   });
 };

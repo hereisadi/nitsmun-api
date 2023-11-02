@@ -6,6 +6,9 @@ type UserDocument = Document & {
   password: string;
   role: string;
   deleteAccount: string;
+  token: string | undefined;
+  tokenExpiresAt: string | undefined;
+  isVerified: boolean;
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -27,6 +30,18 @@ const userSchema = new mongoose.Schema<UserDocument>({
   deleteAccount: {
     type: String,
     default: "no",
+  },
+  token: {
+    type: String,
+    default: undefined,
+  },
+  tokenExpiresAt: {
+    type: String,
+    default: undefined,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -13,6 +13,7 @@ import ApiRoutes from "./routes/ApiRoutes";
 import redirect from "./middlewares/Redirect";
 import connectToDb from "./config/db";
 import { swaggerSpec } from "./routes/ApiRoutes";
+import mSanitize from "./middlewares/Sanitize";
 
 const app = express();
 dotEnv.config();
@@ -22,6 +23,7 @@ app.use(morgan("combined"));
 app.use(cookieParser());
 app.use(cors());
 app.use(redirect);
+app.use(mSanitize);
 
 // enable session support
 const sessionSecret = uuidv4();

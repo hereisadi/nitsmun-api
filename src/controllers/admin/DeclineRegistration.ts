@@ -50,6 +50,9 @@ export const declineRegistration = (req: AuthRequest, res: Response) => {
       }
     } catch (e) {
       console.error(e);
+      return res.status(500).json({
+        error: "Something went wrong",
+      });
     }
   });
 };

@@ -22,6 +22,12 @@ import { sendOtp } from "../controllers/LocalAuthentication/OTP/sendotp";
 import { verifyOtp } from "../controllers/LocalAuthentication/OTP/Verifyotp";
 import { deleteAnyAccount } from "../controllers/superadmin/DeleteAccount";
 import { deleteAccountOnOwn } from "../controllers/LocalAuthentication/DeleteAccountOnOwn";
+import { form } from "../controllers/admin/contactus/form";
+import { getResponses } from "../controllers/admin/contactus/fetch";
+import { sendLink } from "../controllers/LocalAuthentication/magiclink/sendlink";
+import { verifyToken } from "../controllers/LocalAuthentication/magiclink/veirfytoken";
+import { sendResetPwdLink } from "../controllers/LocalAuthentication/magiclink/SendResetPwdLink";
+import { resetPwd } from "../controllers/LocalAuthentication/magiclink/resetpassword";
 
 const router = express.Router();
 
@@ -182,5 +188,23 @@ const DeleteAnyAccountByClientHandler = (req: Request, res: Response) => {
   deleteAccountOnOwn(req as AuthRequest, res);
 };
 router.delete("/client/deleteaccount", DeleteAnyAccountByClientHandler);
+
+// contact us form
+const ContactUsHandler = (req: Request, res: Response) => {
+  getResponses(req as AuthRequest, res);
+};
+router.get("/getcontactusres", ContactUsHandler);
+router.post("/contactus", form);
+
+// magic link (verify email through token)
+const sendLinkHandler = (req: Request, res: Response) => {
+  sendLink(req as AuthRequest, res);
+};
+router.post("/sendlink", sendLinkHandler);
+router.put("/verifytoken", verifyToken); // client wil send token as payload in body
+
+// forgot password
+router.post("/sendresetpwdlink", sendResetPwdLink);
+router.put("/resetpassword", resetPwd);
 
 export default router;

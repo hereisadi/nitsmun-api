@@ -1,11 +1,10 @@
 import { Response } from "express";
-import { verifyToken } from "../../middlewares/VerifyToken";
-import { AuthRequest } from "../../utils/types/AuthRequest";
-import { User } from "../../models/localAuthentication/User";
-import { yp } from "../../models/events/yp";
-// import { CError } from "../../utils/ChalkCustomStyles";
+import { verifyToken } from "../../../middlewares/VerifyToken";
+import { AuthRequest } from "../../../utils/types/AuthRequest";
+import { User } from "../../../models/localAuthentication/User";
+import { conatctus } from "../../../models/contactus/contact";
 
-export const getAllEvents = (req: AuthRequest, res: Response) => {
+export const getResponses = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
       const userId = req.user?.userId;
@@ -19,20 +18,15 @@ export const getAllEvents = (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { role } = user;
-
-      if (role === "admin" || role === "superadmin") {
-        const { eventName } = req.params;
-        console.log(eventName);
-
-        const allSuchEvents = await yp.find({ eventName: eventName });
-
+      if (user.role === "admin" || user.role === "superadmin") {
+        const allResponses = await conatctus.find({});
         res.status(200).json({
           success: true,
-          allSuchEvents,
+          allResponses,
         });
       } else {
-        return res.status(400).json({
+        return res.status(401).json({
+          success: false,
           error: "You are not authorized to access this endpoint",
         });
       }

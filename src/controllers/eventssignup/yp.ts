@@ -22,7 +22,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { email, name, role } = user;
+      const { email, name, role, isVerified } = user;
 
       if (!college || !scholarid || !batch || !payment || !eventName) {
         return res
@@ -46,18 +46,24 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       }
       console.log(existingSignup);
       if (role === "client") {
-        const eventsignup = new yp({
-          name,
-          email,
-          batch,
-          payment,
-          college,
-          scholarid,
-          eventName,
-        });
-        // console.log(eventsignup);
-        await eventsignup.save();
-        res.status(200).json({ message: "Event registration completed" });
+        if (isVerified === true) {
+          const eventsignup = new yp({
+            name,
+            email,
+            batch,
+            payment,
+            college,
+            scholarid,
+            eventName,
+          });
+          // console.log(eventsignup);
+          await eventsignup.save();
+          res.status(200).json({ message: "Event registration completed" });
+        } else {
+          return res.status(401).json({
+            error: "You need to verify your email first",
+          });
+        }
       } else {
         return res.status(401).json({
           error:

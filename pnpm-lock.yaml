@@ -53,6 +53,9 @@ dependencies:
   moment-timezone:
     specifier: ^0.5.43
     version: 0.5.43
+  mongo-sanitize:
+    specifier: ^1.1.0
+    version: 1.1.0
   mongoose:
     specifier: ^7.6.1
     version: 7.6.1
@@ -121,6 +124,9 @@ devDependencies:
   '@types/jsonwebtoken':
     specifier: ^9.0.3
     version: 9.0.3
+  '@types/mongo-sanitize':
+    specifier: ^1.0.2
+    version: 1.0.2
   '@types/morgan':
     specifier: ^1.9.6
     version: 1.9.6
@@ -649,6 +655,10 @@ packages:
 
   /@types/mime@3.0.2:
     resolution: {integrity: sha512-Wj+fqpTLtTbG7c0tH47dkahefpLKEbB+xAZuLq7b4/IDHPl/n6VoXcyUQ2bypFlbSwvCr0y+bD4euTTqTJsPxQ==}
+
+  /@types/mongo-sanitize@1.0.2:
+    resolution: {integrity: sha512-FEsbb5rn/0ICHJ29PD0EvgyKPXgw980Xjek7bEaCWUz2NeiwxW4hA0fsblnxcGoQdD5B6yxLy0Gc2QTRUCw4MA==}
+    dev: true
 
   /@types/morgan@1.9.6:
     resolution: {integrity: sha512-xfKogz5WcKww2DAiVT9zxMgrqQt+Shq8tDVeLT+otoj6dJnkRkyJxMF51mHtUc3JCPKGk5x1EBU0buuGpfftlQ==}
@@ -2370,6 +2380,10 @@ packages:
 
   /moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
+  /mongo-sanitize@1.1.0:
+    resolution: {integrity: sha512-6gB9AiJD+om2eZLxaPKIP5Q8P3Fr+s+17rVWso7hU0+MAzmIvIMlgTYuyvalDLTtE/p0gczcvJ8A3pbN1XmQ/A==}
     dev: false
 
   /mongodb-connection-string-url@2.6.0:

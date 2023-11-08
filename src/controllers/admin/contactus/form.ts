@@ -3,16 +3,21 @@ import moment from "moment-timezone";
 import { conatctus } from "../../../models/contactus/contact";
 export const form = async (req: Request, res: Response) => {
   try {
-    const { name, email, message } = req.body;
-    const Name = name.toString().trim();
-    const Email = email.toString().trim();
-    const Message = message.toString().trim();
-    if (!Name || !Email || !Message) {
+    const { name, email, message } = req.body as {
+      name: string;
+      email: string;
+      message: string;
+    };
+
+    if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
         error: "All fields are required",
       });
     }
+    const Name = name.trim();
+    const Email = email.trim();
+    const Message = message.trim();
 
     const newMessage = {
       name: Name,

@@ -4,13 +4,30 @@ import { CError } from "../../utils/ChalkCustomStyles";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 import { AuthRequest } from "../../utils/types/AuthRequest";
+import { sendEmail } from "../../utils/EmailService";
+
+// access: private
+// method: POST
+// desc: register for an event
+// role: client
+// payload : { payment, eventName, previousMunExperience } and college only for NITS
+// route: /reg/yp
+
 export const ypController = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
-      // no need to get name and email from the frontend. use verifyToken to get it from the token
-      const { college, scholarid, batch, payment, eventName } = req.body;
+      const { payment, eventName, previousMunExperience } = req.body as {
+        payment: string;
+        eventName: string;
+        previousMunExperience: string;
+      };
 
-      //  first find the name and email by decoding the token
+      if (!payment || !eventName || !previousMunExperience) {
+        return res
+          .status(400)
+          .json({ error: "Please fill all required fields" });
+      }
+
       const userId = req.user?.userId;
       if (!userId) {
         return res.status(401).json({ error: "Unauthorized" });
@@ -22,18 +39,12 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { email, name, role, isVerified } = user;
-
-      if (!college || !scholarid || !batch || !payment || !eventName) {
-        return res
-          .status(400)
-          .json({ error: "Please fill all required fields" });
-      }
+      const { email, name, role, isVerified, isStudentOfNITS } = user;
 
       // check if that email exists for that eventName if yes, then decline the registration
       const existingSignup = await yp.findOne({ email, eventName });
-      const indexes = await yp.collection.getIndexes();
-      console.log(indexes);
+      // const indexes = await yp.collection.getIndexes();
+      // console.log(indexes);
 
       if (existingSignup) {
         return res.status(400).json({
@@ -44,21 +55,61 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           `Signup with this ${email} for the event ${eventName} does not exists in the schema`
         );
       }
-      console.log(existingSignup);
+
+      // console.log(existingSignup);
+
       if (role === "client") {
         if (isVerified === true) {
-          const eventsignup = new yp({
-            name,
-            email,
-            batch,
-            payment,
-            college,
-            scholarid,
-            eventName,
-          });
-          // console.log(eventsignup);
-          await eventsignup.save();
-          res.status(200).json({ message: "Event registration completed" });
+          if (isStudentOfNITS === false) {
+            let { college } = req.body as { college: string };
+            if (!college) {
+              return res
+                .status(400)
+                .json({ error: "Please fill all required fields" });
+            }
+            college = college?.trim();
+
+            const eventsignup = new yp({
+              name,
+              email,
+              payment,
+              eventName,
+              college,
+              previousMunExperience,
+            });
+
+            await eventsignup.save();
+
+            sendEmail(
+              email,
+              "[NITSMUN] ${eventName} Registration Completed",
+              `Hi ${user.name},\n
+              Congratulations, You have successfully registered for the ${eventName}. \n
+              \n\n Team NITSMUN`
+            );
+            res.status(200).json({ message: "Event registration completed" });
+          } else if (isStudentOfNITS === true) {
+            const eventsignup = new yp({
+              name,
+              email,
+              payment,
+              eventName,
+              college: "NIT Silchar",
+              previousMunExperience,
+              scholarid: user.scholarID,
+              batch: user.year,
+            });
+
+            await eventsignup.save();
+            sendEmail(
+              email,
+              "[NITSMUN] ${eventName} Registration Completed",
+              `Hi ${user.name},\n
+              Congratulations, You have successfully registered for the ${eventName}. \n
+              \n\n Team NITSMUN`
+            );
+            res.status(200).json({ message: "Event registration completed" });
+          }
         } else {
           return res.status(401).json({
             error: "You need to verify your email first",

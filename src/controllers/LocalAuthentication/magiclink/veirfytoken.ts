@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 import { User } from "../../../models/localAuthentication/User";
 import moment from "moment-timezone";
+
+// access: public
+// method: PUT
+// payload : token as string
+// endpoint: /verifytoken
+
 export const verifyToken = async (req: Request, res: Response) => {
   try {
     const { token } = req.body as { token: string };
@@ -15,6 +21,8 @@ export const verifyToken = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // console.log(user)
 
     const tokenExpiresAt = user.tokenExpiresAt as string;
     const currentTime = moment

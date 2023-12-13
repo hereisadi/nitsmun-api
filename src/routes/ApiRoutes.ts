@@ -28,6 +28,7 @@ import { sendLink } from "../controllers/LocalAuthentication/magiclink/sendlink"
 import { verifyToken } from "../controllers/LocalAuthentication/magiclink/veirfytoken";
 import { sendResetPwdLink } from "../controllers/LocalAuthentication/magiclink/SendResetPwdLink";
 import { resetPwd } from "../controllers/LocalAuthentication/magiclink/resetpassword";
+import { getScheduledAccount } from "../controllers/superadmin/getScheduledAccount";
 
 const router = express.Router();
 
@@ -84,6 +85,13 @@ const dashboardReqHandler = (req: Request, res: Response) => {
 
 router.get("/dashboard", dashboardReqHandler);
 
+// magic link (verify email through token)
+const sendLinkHandler = (req: Request, res: Response) => {
+  sendLink(req as AuthRequest, res);
+};
+router.post("/sendlink", sendLinkHandler);
+router.put("/verifytoken", verifyToken); // client wil send token as payload in body
+
 // yp event regsitration
 const ypControllerHandler = (req: Request, res: Response) => {
   ypController(req as AuthRequest, res);
@@ -94,7 +102,7 @@ router.post("/reg/yp", ypControllerHandler);
 const AllEventsHandler = (req: Request, res: Response) => {
   allEvents(req as AuthRequest, res);
 };
-router.post("/client/allevents", AllEventsHandler);
+router.get("/client/allevents", AllEventsHandler);
 
 // fetch all events registered by all the users for admin side
 const AdminAllEventHandler = (req: Request, res: Response) => {
@@ -183,6 +191,12 @@ const DeleteAnyAccountHandler = (req: Request, res: Response) => {
 };
 router.delete("/superadmin/deleteaccount", DeleteAnyAccountHandler);
 
+// get scheduled account deletion
+const getScheduledDeleteAccount = (req: Request, res: Response) => {
+  getScheduledAccount(req as AuthRequest, res);
+};
+router.get("/superadmin/getscheduleddeleteaccount", getScheduledDeleteAccount);
+
 // delete account on its own after 15 days, after request has made
 const DeleteAnyAccountByClientHandler = (req: Request, res: Response) => {
   deleteAccountOnOwn(req as AuthRequest, res);
@@ -195,13 +209,6 @@ const ContactUsHandler = (req: Request, res: Response) => {
 };
 router.get("/getcontactusres", ContactUsHandler);
 router.post("/contactus", form);
-
-// magic link (verify email through token)
-const sendLinkHandler = (req: Request, res: Response) => {
-  sendLink(req as AuthRequest, res);
-};
-router.post("/sendlink", sendLinkHandler);
-router.put("/verifytoken", verifyToken); // client wil send token as payload in body
 
 // forgot password
 router.post("/sendresetpwdlink", sendResetPwdLink);

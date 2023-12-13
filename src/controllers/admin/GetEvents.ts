@@ -5,6 +5,13 @@ import { User } from "../../models/localAuthentication/User";
 import { yp } from "../../models/events/yp";
 // import { CError } from "../../utils/ChalkCustomStyles";
 
+// access: private
+// method: GET
+// desc: get all events
+// role: superadmin || admin
+// payload : eventName as params
+// route: /admin/getregistered/:eventName
+
 export const getAllEvents = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {

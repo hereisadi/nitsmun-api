@@ -2,8 +2,15 @@ import { Response } from "express";
 import { AuthRequest } from "../../utils/types/AuthRequest";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
-import cron from "node-cron";
 import { sendEmail } from "../../utils/EmailService";
+
+// access: private
+// method: DELETE
+// desc: delete the account of the user
+// role: client
+// payload : none
+// route: /client/deleteaccount
+
 export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -20,14 +27,29 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
 
       const { role, email, deleteAccount, _id } = user;
 
+      // get the emails of all the super admins
+      const superAdmins = await User.find({ role: "superadmin" });
+      const superAdminEmails = superAdmins.map((admin) => admin.email);
+      console.log(typeof superAdminEmails);
+
       if (role === "client") {
         if (deleteAccount === "no") {
           await User.findByIdAndUpdate(_id, { deleteAccount: "scheduled" });
           sendEmail(
             email,
-            "Account Deletion Schedule",
-            `Your account will be deleted after 15 days. \n If you want to cancel the deletion, please contact the nitsmun web team. \n Thank you.`
+            "[NITSMUN] Account Deletion Schedule",
+            `Hi ${user.name},\nYour account will be deleted within 15 days. \n If you want to cancel the deletion, please contact the NITSMUN web team. \n Thank you.`
           );
+
+          // send email to all the super admins
+          superAdminEmails.forEach((adminEmail) => {
+            sendEmail(
+              adminEmail,
+              "[NITSMUN] Account Deletion update",
+              `Hi,\n ${user.name} has scheduled his/her account for deletion. \n\n Team NITSMUN}`
+            );
+          });
+
           res.status(200).json({
             message: "Account deletion scheduled successfully",
           });
@@ -36,19 +58,6 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
             error: "Account deletion already scheduled",
           });
         }
-
-        // delete the account after 15 days
-        cron.schedule("0 0 */15 * *", async () => {
-          await User.findOneAndDelete({ email });
-          res
-            .status(200)
-            .json({ message: "User deleted successfully", success: true });
-          sendEmail(
-            email,
-            "Account Deleted",
-            `Your account has been deleted successfully`
-          );
-        });
       } else {
         res.status(401).json({
           success: false,

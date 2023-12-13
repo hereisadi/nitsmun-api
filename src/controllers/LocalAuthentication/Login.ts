@@ -28,6 +28,13 @@ const emailLimiter = rateLimit({
   },
 });
 
+// access: public
+// method: POST
+// desc: login user
+// role: all
+// payload : { email, password }
+// route: /login
+
 export const login = async (req: Request, res: Response) => {
   emailLimiter(req, res, async () => {
     isEmail(req, res, async () => {
@@ -51,6 +58,12 @@ export const login = async (req: Request, res: Response) => {
           return res.status(401).json({ error: "No account found" });
         }
 
+        if (user.deleteAccount === "scheduled") {
+          return res
+            .status(401)
+            .json({ error: "Your account has been scheduled for deletion." });
+        }
+
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
           return res.status(401).json({ error: "Wrong email or password" });
@@ -59,7 +72,7 @@ export const login = async (req: Request, res: Response) => {
         const token = jwt.sign(
           { userId: user._id, email: user.email },
           YOUR_SECRET_KEY!,
-          { expiresIn: "720h" }
+          { expiresIn: "72000h" }
         );
 
         // res.cookie("token", token, {

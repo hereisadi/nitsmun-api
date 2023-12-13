@@ -6,6 +6,13 @@ import { User } from "../../../models/localAuthentication/User";
 import moment from "moment-timezone";
 import { sendEmail } from "../../../utils/EmailService";
 
+// access: private
+// method: POST
+// desc: send verification link to the user's email
+// role: all
+// payload : none
+// route: /sendlink
+
 export const sendLink = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -21,6 +28,7 @@ export const sendLink = async (req: AuthRequest, res: Response) => {
       }
 
       const Email = user.email.toString().trim() as string;
+      const name = user.name.toString().trim() as string;
 
       const token = crypto.randomBytes(48).toString("hex") as string;
 
@@ -45,8 +53,13 @@ export const sendLink = async (req: AuthRequest, res: Response) => {
       sendEmail(
         Email,
         "[NITSMUN] Verify Email",
-        `Click on this link to verify your email: ${verifyEmailLink} \n Link is valid for 60 minutes \n\n Team NITSMUN`
+        `Hi ${name}\nClick on this link to verify your email: ${verifyEmailLink} \n Link is valid for 60 minutes \n\n Team NITSMUN`
       );
+
+      return res.status(200).json({
+        success: true,
+        message: "Verification link sent successfully",
+      });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Server Error", success: false });

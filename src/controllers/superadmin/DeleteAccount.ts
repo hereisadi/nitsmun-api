@@ -3,6 +3,13 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 
+// access: private
+// method: DELETE
+// desc: delete any account
+// role: superadmin
+// payload : accountID
+// route: /superadmin/deleteaccount
+
 export const deleteAnyAccount = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {

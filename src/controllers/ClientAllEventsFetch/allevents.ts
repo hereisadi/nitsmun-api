@@ -8,56 +8,48 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 
 dotEnv.config();
 
+// access: private
+// method: GET
+// desc: fetch all the events registered by the user
+// role: client
+// payload : none
+// route: /client/allevents
+
 export const allEvents = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
-    const { id, pwd } = req.body;
-
-    if (id === process.env.id && pwd === process.env.pwd) {
-      try {
-        // finding email of the user
-        const userId = req.user?.userId;
-        if (!userId) {
-          return res.status(401).json({ error: "Unauthorized" });
-        }
-
-        const user = await User.findById(userId);
-
-        if (!user) {
-          return res.status(404).json({ error: "User not found" });
-        }
-
-        const { email, role } = user;
-
-        // finding registered events of the user with the role: client
-        if (role === "client") {
-          const ypEvents = await yp.find({ email: email });
-          res.status(200).json({
-            success: true,
-            ypEvents,
-          });
-        } else if (role === "admin" || role === "superadmin") {
-          // find all the events registered by all the users
-          // const eventName = "yp";
-          // const ypEvents = await yp.find({ eventName: eventName });
-          // res.status(200).json({
-          //   success: true,
-          //   ypEvents,
-          // });
-          console.log("admin or superadmin role user have logged in");
-        } else {
-          return res
-            .status(400)
-            .json({ error: "no such role found in the db" });
-        }
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({
-          success: false,
-          error: "Something went wrong",
-        });
+    try {
+      // finding email of the user
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
-    } else {
-      CError("Something went wrong");
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const { email, role } = user;
+
+      // finding registered events of the user with the role: client
+      if (role === "client") {
+        const ypEvents = await yp.find({ email: email });
+        res.status(200).json({
+          success: true,
+          ypEvents,
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "not authorized to access this endpoint" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        error: "Something went wrong",
+      });
     }
   });
 };

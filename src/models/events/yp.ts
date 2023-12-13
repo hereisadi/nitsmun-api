@@ -12,6 +12,7 @@ type UserDocument = Document & {
   status: string;
   cofirmedRegistrationAt: string;
   eventName: string;
+  previousMunExperience: string;
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
@@ -28,15 +29,21 @@ const ypSchema = new mongoose.Schema<UserDocument>({
     required: true,
     unique: false,
   },
-  scholarid: {
+  college: {
     type: String,
     required: true,
+  },
+
+  // for nits guys only starts here
+  scholarid: {
+    type: String,
   },
   batch: {
     type: String,
-    required: true,
   },
-  college: {
+  // for nits guys only ends here
+
+  previousMunExperience: {
     type: String,
     required: true,
   },

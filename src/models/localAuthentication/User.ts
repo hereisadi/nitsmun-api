@@ -9,6 +9,11 @@ type UserDocument = Document & {
   token: string | undefined;
   tokenExpiresAt: string | undefined;
   isVerified: boolean;
+  isStudentOfNITS: boolean;
+  instituteEmail: string;
+  branch: string;
+  scholarID: string;
+  year: string;
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -18,6 +23,26 @@ const userSchema = new mongoose.Schema<UserDocument>({
     required: true,
     unique: true,
   },
+  isStudentOfNITS: {
+    type: Boolean,
+    required: true,
+  },
+  // only for NITS student
+  instituteEmail: {
+    type: String,
+    unique: true,
+  },
+  scholarID: {
+    type: String,
+    unique: true,
+  },
+  branch: {
+    type: String,
+  },
+  year: {
+    type: String,
+  },
+
   role: {
     type: String,
     required: true,

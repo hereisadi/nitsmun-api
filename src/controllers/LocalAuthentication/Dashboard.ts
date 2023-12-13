@@ -19,12 +19,49 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { name, email, role } = user;
-      res.status(200).json({
-        name,
-        email,
-        role,
-      });
+      if (user.isStudentOfNITS === true) {
+        const {
+          name,
+          email,
+          role,
+          isStudentOfNITS,
+          deleteAccount,
+          isVerified,
+          instituteEmail,
+          scholarID,
+          branch,
+          year,
+        } = user;
+        res.status(200).json({
+          name,
+          email,
+          isStudentOfNITS,
+          instituteEmail,
+          year,
+          branch,
+          scholarID,
+          role,
+          isVerified,
+          deleteAccount,
+        });
+      } else if (user.isStudentOfNITS === false) {
+        const {
+          name,
+          email,
+          role,
+          isStudentOfNITS,
+          deleteAccount,
+          isVerified,
+        } = user;
+        res.status(200).json({
+          name,
+          email,
+          isStudentOfNITS,
+          role,
+          isVerified,
+          deleteAccount,
+        });
+      }
     } catch (error) {
       CError("Failed to load user details");
       res.status(500).json({ error: "Failed to load user details" });

@@ -31,27 +31,19 @@ const emailLimiter = rateLimit({
 export const login = async (req: Request, res: Response) => {
   emailLimiter(req, res, async () => {
     isEmail(req, res, async () => {
-      let { email, password } = req.body;
-      email = email.toString().trim();
-      password = password.toString().trim();
+      let { email, password } = req.body as {
+        email: string;
+        password: string;
+      };
 
-      // validation using express-validator
-      // check(email).trim().isEmail().withMessage("Email is invalid").run(req);
-      // check(password)
-      //   .trim()
-      //   .isLength({ min: 8 })
-      //   .withMessage("Password should be at least 8 characters long")
-      //   .run(req);
+      if (!email || !password) {
+        return res
+          .status(400)
+          .json({ error: "Please fill all required fields" });
+      }
 
-      // // throw errors with 400 status code
-      // const validationErrors = validationResult(req);
-      // if (!validationErrors.isEmpty()) {
-      //   return res.status(400).json({ errors: validationErrors.array() });
-      // }
-
-      // sanitizing the email and password
-      // const sanitizedEmail = sanitizeInput(email);
-      // const sanitizedPassword = sanitizeInput(password);
+      email = email?.toString().toLowerCase().trim();
+      password = password?.toString().trim();
 
       try {
         const user = await User.findOne({ email });
@@ -61,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-          return res.status(401).json({ error: "Invalid email or password" });
+          return res.status(401).json({ error: "Wrong email or password" });
         }
 
         const token = jwt.sign(

@@ -3,6 +3,13 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 
+// access: private
+// method: GET
+// desc: get all accounts
+// role: superadmin
+// payload : none
+// route: /superadmin/getallaccounts
+
 export const getAllCreatedAccounts = async (
   req: AuthRequest,
   res: Response

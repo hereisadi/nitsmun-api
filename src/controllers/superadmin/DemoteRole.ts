@@ -3,6 +3,13 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 
+// access: private
+// method: PUT
+// desc: demote role of an account
+// role: superadmin
+// payload : accountID
+// route: /demote/client
+
 export const demoteRole = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {

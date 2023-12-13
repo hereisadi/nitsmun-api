@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import moment from "moment-timezone";
 import { conatctus } from "../../../models/contactus/contact";
+
+// access: public
+// method: POST
+// desc: contact us form
+// role: none
+// payload : name, email, message
+// route: /contactus
+
 export const form = async (req: Request, res: Response) => {
   try {
     const { name, email, message } = req.body as {
@@ -16,7 +24,7 @@ export const form = async (req: Request, res: Response) => {
       });
     }
     const Name = name.trim();
-    const Email = email.trim();
+    const Email = email.toLowerCase().trim();
     const Message = message.trim();
 
     const newMessage = {

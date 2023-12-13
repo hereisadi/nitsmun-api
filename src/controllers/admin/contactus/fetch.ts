@@ -4,6 +4,13 @@ import { AuthRequest } from "../../../utils/types/AuthRequest";
 import { User } from "../../../models/localAuthentication/User";
 import { conatctus } from "../../../models/contactus/contact";
 
+// access: private
+// method: GET
+// desc: get all responses
+// role: superadmin || admin
+// payload : none
+// route: /getcontactusres
+
 export const getResponses = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {

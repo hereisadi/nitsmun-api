@@ -12,7 +12,7 @@ import { sendEmail } from "../../utils/EmailService";
 
 export const signup = async (req: Request, res: Response) => {
   isEmail(req, res, async () => {
-    const { name, email, password, confirmPassword, isStudentOfNITS } =
+    const { name, email, phone, password, confirmPassword, isStudentOfNITS } =
       req.body;
 
     // // validation using express-validator
@@ -49,6 +49,7 @@ export const signup = async (req: Request, res: Response) => {
       !email ||
       !name ||
       !password ||
+      !phone ||
       !confirmPassword ||
       isStudentOfNITS === undefined ||
       isStudentOfNITS === null ||
@@ -61,6 +62,7 @@ export const signup = async (req: Request, res: Response) => {
     const Sname = name?.toString().trim();
     const Spassword = password?.toString().trim();
     const SconfirmPassword = confirmPassword?.toString().trim();
+    const Sphone = phone?.toString().trim();
 
     if (Spassword.length < 8) {
       return res
@@ -83,11 +85,9 @@ export const signup = async (req: Request, res: Response) => {
       if (isStudentOfNITS === true) {
         let { instituteEmail, scholarID, branch, year } = req.body;
         if (!instituteEmail || !scholarID || !branch || !year) {
-          return res
-            .status(400)
-            .json({
-              error: "Please fill all additional NITS related required fields",
-            });
+          return res.status(400).json({
+            error: "Please fill all additional NITS related required fields",
+          });
         }
 
         instituteEmail = instituteEmail?.toString().toLowerCase().trim();
@@ -111,6 +111,7 @@ export const signup = async (req: Request, res: Response) => {
               scholarID,
               branch,
               year,
+              phone: Sphone,
             });
 
             await user.save();
@@ -141,6 +142,7 @@ export const signup = async (req: Request, res: Response) => {
           email: Semail,
           password: hashedPassword,
           isStudentOfNITS,
+          phone: Sphone,
         });
 
         await user.save();

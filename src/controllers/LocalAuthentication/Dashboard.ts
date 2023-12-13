@@ -32,11 +32,13 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           branch,
           year,
           _id,
+          phone,
         } = user;
         res.status(200).json({
           _id,
           name,
           email,
+          phone,
           isStudentOfNITS,
           instituteEmail,
           year,
@@ -49,6 +51,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
       } else if (user.isStudentOfNITS === false) {
         const {
           _id,
+          phone,
           name,
           email,
           role,
@@ -60,6 +63,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           _id,
           name,
           email,
+          phone,
           isStudentOfNITS,
           role,
           isVerified,

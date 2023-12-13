@@ -5,6 +5,13 @@ import { verifyToken } from "../../middlewares/VerifyToken";
 import { yp } from "../../models/events/yp";
 import moment from "moment-timezone";
 
+// access: private
+// method: PUT
+// desc: confirm event registration of a user
+// role: admin
+// payload : regID
+// route: /confirm/reg
+
 export const confirmRegistration = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -22,7 +29,7 @@ export const confirmRegistration = (req: AuthRequest, res: Response) => {
 
       const { role } = user;
 
-      if (role === "admin" || role === "superadmin") {
+      if (role === "admin") {
         const { regID } = req.body;
         const reg = await yp.findById(regID);
         if (!reg) {

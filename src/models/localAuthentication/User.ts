@@ -3,6 +3,7 @@ import mongoose, { Document } from "mongoose";
 type UserDocument = Document & {
   name: string;
   email: string;
+  phone: string;
   password: string;
   role: string;
   deleteAccount: string;
@@ -19,6 +20,11 @@ type UserDocument = Document & {
 const userSchema = new mongoose.Schema<UserDocument>({
   name: String,
   email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phone: {
     type: String,
     required: true,
     unique: true,

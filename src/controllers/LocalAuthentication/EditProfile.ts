@@ -5,6 +5,13 @@ import { CSuccess } from "../../utils/ChalkCustomStyles";
 import { User } from "../../models/localAuthentication/User";
 import bcrypt from "bcrypt";
 
+// access: private
+// method: PUT
+// desc: edit profile
+// role: all
+// payload : newName, newPwd, confirmNewPwd, phone
+// route: /all/edit/profile
+
 export const editProfile = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -21,9 +28,14 @@ export const editProfile = (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { newName, newPwd, confirmNewPwd } = req.body; // entries subject to change
+      let { newName, newPwd, confirmNewPwd, phone } = req.body;
 
-      if (!newName && !newPwd && !confirmNewPwd) {
+      phone = phone?.toString().trim();
+      newName = newName?.toString().trim();
+      newPwd = newPwd?.toString().trim();
+      confirmNewPwd = confirmNewPwd?.toString().trim();
+
+      if (!newName && !newPwd && !confirmNewPwd && !phone) {
         return res.status(400).json({ error: "No entries to update" });
       }
 
@@ -45,6 +57,10 @@ export const editProfile = (req: AuthRequest, res: Response) => {
 
       if (newName) {
         user.name = newName;
+      }
+
+      if (phone) {
+        user.phone = phone;
       }
 
       // all user can edit their profile irrespective of their role

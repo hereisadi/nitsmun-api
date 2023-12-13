@@ -4,6 +4,13 @@ import { AuthRequest } from "../../utils/types/AuthRequest";
 import { User } from "../../models/localAuthentication/User";
 import { yp } from "../../models/events/yp";
 
+// access: private
+// method: GET
+// desc: get all confirmed registrations for an event
+// role: admin
+// endpoint: /admin/getconfirmedreg/:eventName
+// payload: eventName (params)
+
 export const getConfirmedRegistrations = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -20,7 +27,7 @@ export const getConfirmedRegistrations = (req: AuthRequest, res: Response) => {
 
       const { role } = user;
 
-      if (role === "admin" || role === "superadmin") {
+      if (role === "admin") {
         const { eventName } = req.params;
         console.log(eventName);
 

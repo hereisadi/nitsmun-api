@@ -4,6 +4,13 @@ import { User } from "../../models/localAuthentication/User";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { yp } from "../../models/events/yp";
 
+// access: private
+// method: PUT
+// desc: confirm event registration of a user
+// role: admin
+// payload : regID
+// route: /decline/reg
+
 export const declineRegistration = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
@@ -21,7 +28,7 @@ export const declineRegistration = (req: AuthRequest, res: Response) => {
 
       const { role } = user;
 
-      if (role === "admin" || role === "superadmin") {
+      if (role === "admin") {
         const { regID } = req.body;
         const reg = await yp.findById(regID);
         if (!reg) {

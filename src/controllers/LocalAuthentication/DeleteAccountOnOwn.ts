@@ -30,7 +30,8 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
       // get the emails of all the super admins
       const superAdmins = await User.find({ role: "superadmin" });
       const superAdminEmails = superAdmins.map((admin) => admin.email);
-      console.log(typeof superAdminEmails);
+      // console.log(superAdminEmails);
+      // console.log(typeof superAdminEmails);
 
       if (role === "client") {
         if (deleteAccount === "no") {
@@ -38,7 +39,7 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
           sendEmail(
             email,
             "[NITSMUN] Account Deletion Schedule",
-            `Hi ${user.name},\nYour account will be deleted within 15 days. \n If you want to cancel the deletion, please contact the NITSMUN web team. \n Thank you.`
+            `Hi ${user.name},\nWe have received your request of account deletion. Your account will be deleted within 15 days. \n If you want to cancel the deletion, Please contact the NITSMUN web team. \n Thank you.`
           );
 
           // send email to all the super admins
@@ -46,7 +47,7 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
             sendEmail(
               adminEmail,
               "[NITSMUN] Account Deletion update",
-              `Hi,\n ${user.name} has scheduled his/her account for deletion. \n\n Team NITSMUN}`
+              `Hi ${adminEmail},\n ${user.name} with the email id ${user.email} has scheduled his/her account for deletion. \n\n Team NITSMUN`
             );
           });
 
@@ -54,7 +55,7 @@ export const deleteAccountOnOwn = (req: AuthRequest, res: Response) => {
             message: "Account deletion scheduled successfully",
           });
         } else if (deleteAccount === "scheduled") {
-          res.status(401).json({
+          return res.status(401).json({
             error: "Account deletion already scheduled",
           });
         }

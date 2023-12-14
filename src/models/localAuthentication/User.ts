@@ -36,11 +36,9 @@ const userSchema = new mongoose.Schema<UserDocument>({
   // only for NITS student
   instituteEmail: {
     type: String,
-    unique: true,
   },
   scholarID: {
     type: String,
-    unique: true,
   },
   branch: {
     type: String,
@@ -75,6 +73,8 @@ const userSchema = new mongoose.Schema<UserDocument>({
     default: false,
   },
 });
+
+userSchema.index({ email: 1 }, { unique: true });
 
 export const User = mongoose.model<UserDocument>(
   "localAuthenticationSignup",

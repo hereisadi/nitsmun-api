@@ -102,6 +102,28 @@ export const signup = async (req: Request, res: Response) => {
               return res.status(400).json({ error: "Email already exists" });
             }
 
+            // checking if institute email already exists
+            const existingInstituteEmail = await User.findOne({
+              instituteEmail,
+            });
+
+            if (existingInstituteEmail) {
+              return res.status(400).json({
+                error: "this Institute email already exists",
+              });
+            }
+
+            // checking if scholar id already exists
+            const existingScholarID = await User.findOne({
+              scholarID,
+            });
+
+            if (existingScholarID) {
+              return res.status(400).json({
+                error: "this Scholar ID already exists",
+              });
+            }
+
             const user = new User({
               name: Sname,
               email: Semail,

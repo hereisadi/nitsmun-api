@@ -2,6 +2,14 @@ import { Response, Request } from "express";
 import bcrypt from "bcrypt";
 import { User } from "../../../models/localAuthentication/User";
 import moment from "moment-timezone";
+import { sendEmail } from "../../../utils/EmailService";
+
+// access: public
+// method: PUT
+// desc: reset password
+// role: all
+// payload : token, newpwd, cnewpwd
+// route: /resetpassword
 
 export const resetPwd = async (req: Request, res: Response) => {
   try {
@@ -10,15 +18,16 @@ export const resetPwd = async (req: Request, res: Response) => {
       newpwd: string;
       cnewpwd: string;
     };
-    const Token = token.trim();
-    const newPwd = newpwd.trim();
-    const newCPwd = cnewpwd.trim();
 
-    if (!Token || !newPwd || !newCPwd) {
+    if (!token || !newpwd || !cnewpwd) {
       return res.status(400).json({
         error: "payload is missing",
       });
     }
+
+    const Token = token?.trim();
+    const newPwd = newpwd?.trim();
+    const newCPwd = cnewpwd?.trim();
 
     const user = await User.findOne({
       token: Token,
@@ -29,6 +38,8 @@ export const resetPwd = async (req: Request, res: Response) => {
         error: "no user found",
       });
     }
+
+    // console.log(user)
 
     const tokenExpiresAt = user.tokenExpiresAt as string;
     const currentTime = moment
@@ -55,6 +66,14 @@ export const resetPwd = async (req: Request, res: Response) => {
           user.token = undefined;
           user.tokenExpiresAt = undefined;
           await user.save();
+
+          // sending email to user that their password has been changed
+
+          sendEmail(
+            user.email,
+            "[NITSMUN] Password Reset Successfully",
+            `Hi ${user.name},\nYour password has been reset Successfully.\n You can now login with the new updated password. \n\n Team NITSMUN`
+          );
           return res.status(200).json({
             success: true,
             message: "Password reset successfully",

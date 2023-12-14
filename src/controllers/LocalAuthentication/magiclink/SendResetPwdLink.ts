@@ -5,12 +5,25 @@ import moment from "moment-timezone";
 import { sendEmail } from "../../../utils/EmailService";
 import { isEmail } from "../../../utils/isEmail";
 
+// access: public
+// method: POST
+// desc: send reset password link to the user's email
+// role: all
+// payload : email
+// route: /sendresetpwdlink
+
 export const sendResetPwdLink = async (req: Request, res: Response) => {
   isEmail(req, res, async () => {
     try {
       const { email } = req.body as { email: string };
 
-      const Email = email.toString().trim() as string;
+      if (!email) {
+        return res.status(400).json({
+          error: "email is missing",
+        });
+      }
+
+      const Email = email?.toLowerCase().trim() as string;
 
       const user = await User.findOne({
         email: Email,
@@ -19,6 +32,13 @@ export const sendResetPwdLink = async (req: Request, res: Response) => {
       if (!user) {
         return res.status(404).json({
           error: "no user found",
+        });
+      }
+
+      if (user.isVerified === false) {
+        return res.status(404).json({
+          error: "Please verify your email first",
+          success: false,
         });
       }
 
@@ -45,11 +65,16 @@ export const sendResetPwdLink = async (req: Request, res: Response) => {
       sendEmail(
         Email,
         "[NITSMUN] Reset Password",
-        `Click on this link to reset your password: ${verifyEmailLink} \n Link is valid for 60 minutes \n\n Team NITSMUN`
+        `Hi ${user.name},\nWe have received a request to reset your password. If this is really you, Please Click on the following link to reset your password:\n ${verifyEmailLink} \n\n Link is valid for 60 minutes \n\n Team NITSMUN`
       );
+
+      return res.status(200).json({
+        success: true,
+        message: "Reset password link sent successfully",
+      });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Server Error", success: false });
+      return res.status(500).json({ error: "Server Error", success: false });
     }
   });
 };

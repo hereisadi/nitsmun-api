@@ -13,15 +13,15 @@ export const accountExists = async (req: Request, res: Response) => {
 
     email = email?.toLowerCase().trim();
     if (!email.includes("@")) {
-      return res.status(400).json({
-        error: "not the correct email format",
+      return res.status(200).json({
+        message: "not the correct email format",
       });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({
-        error: "no account found",
+      return res.status(200).json({
+        message: "no account found",
       });
     } else {
       return res.status(200).json({

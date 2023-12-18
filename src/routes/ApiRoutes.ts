@@ -29,6 +29,7 @@ import { verifyToken } from "../controllers/LocalAuthentication/magiclink/veirfy
 import { sendResetPwdLink } from "../controllers/LocalAuthentication/magiclink/SendResetPwdLink";
 import { resetPwd } from "../controllers/LocalAuthentication/magiclink/resetpassword";
 import { getScheduledAccount } from "../controllers/superadmin/getScheduledAccount";
+import { accountExists } from "../controllers/AccountExistence/AccountExists";
 
 const router = express.Router();
 
@@ -213,5 +214,7 @@ router.post("/contactus", form);
 // forgot password
 router.post("/sendresetpwdlink", sendResetPwdLink);
 router.put("/resetpassword", resetPwd);
+
+router.get("/accounttest/:email", accountExists);
 
 export default router;

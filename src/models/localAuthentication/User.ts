@@ -15,6 +15,7 @@ type UserDocument = Document & {
   branch: string;
   scholarID: string;
   year: string;
+  photo: string;
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -27,7 +28,6 @@ const userSchema = new mongoose.Schema<UserDocument>({
   phone: {
     type: String,
     required: true,
-    unique: true,
   },
   isStudentOfNITS: {
     type: Boolean,
@@ -51,6 +51,9 @@ const userSchema = new mongoose.Schema<UserDocument>({
     type: String,
     required: true,
     default: "client",
+  },
+  photo: {
+    type: String,
   },
   password: {
     type: String,

@@ -13,6 +13,8 @@ type UserDocument = Document & {
   cofirmedRegistrationAt: string;
   eventName: string;
   previousMunExperience: string;
+  committeePreference: [string];
+  portfolioPreference: [string];
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
@@ -46,6 +48,12 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   previousMunExperience: {
     type: String,
     required: true,
+  },
+  committeePreference: {
+    type: [String],
+  },
+  portfolioPreference: {
+    type: [String],
   },
   payment: {
     type: String,

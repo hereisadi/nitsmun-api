@@ -29,13 +29,14 @@ export const editProfile = (req: AuthRequest, res: Response) => {
       }
 
       let { newName, newPwd, confirmNewPwd, phone } = req.body;
+      const { photo } = req.body;
 
       phone = phone?.toString().trim();
       newName = newName?.toString().trim();
       newPwd = newPwd?.toString().trim();
       confirmNewPwd = confirmNewPwd?.toString().trim();
 
-      if (!newName && !newPwd && !confirmNewPwd && !phone) {
+      if (!newName && !newPwd && !confirmNewPwd && !phone && !photo) {
         return res.status(400).json({ error: "No entries to update" });
       }
 
@@ -61,6 +62,10 @@ export const editProfile = (req: AuthRequest, res: Response) => {
 
       if (phone) {
         user.phone = phone;
+      }
+
+      if (photo) {
+        user.photo = photo;
       }
 
       // all user can edit their profile irrespective of their role

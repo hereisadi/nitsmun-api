@@ -16,7 +16,7 @@
     ```
   - Set following environment variables in a .env file in the root directory
     ``` 
-   #Database server connection URI
+    #Database server connection URI
     MONGODB_URL = 'mongodb://<user_name>:<password>@xxxxx.test.com:xxxxx/<db_name>'
 
     #jwt secret
@@ -74,6 +74,7 @@ Type: Public
 Route: 
 /v1/api/verifytoken
 payload : token
+
 ```
 
 - Send link to reset password
@@ -92,7 +93,7 @@ Type: public
 Route:
 /v1/api/resetpassword
 payload: token, newpwd, cnewpwd
-
+```
 
 - Edit profile
 ```
@@ -201,6 +202,7 @@ Route:
 role: superadmin
 payload: accountID
 ```
+
 - Demote the role to client (SUPERADMIN)
 ```
 Method: PUT

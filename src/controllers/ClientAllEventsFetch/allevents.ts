@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { yp } from "../../models/events/yp";
 import dotEnv from "dotenv";
-import { CError } from "../../utils/ChalkCustomStyles";
+// import { CError } from "../../utils/ChalkCustomStyles";
 import { verifyToken } from "../../middlewares/VerifyToken";
 import { User } from "../../models/localAuthentication/User";
 import { AuthRequest } from "../../utils/types/AuthRequest";

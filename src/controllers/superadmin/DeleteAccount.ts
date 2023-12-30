@@ -46,7 +46,7 @@ export const deleteAnyAccount = (req: AuthRequest, res: Response) => {
         const { role } = account;
 
         if (role === "client") {
-          await User.findOneAndDelete({ accountID });
+          await User.findOneAndDelete({ _id: accountID });
         } else {
           res.status(401).json({
             success: false,

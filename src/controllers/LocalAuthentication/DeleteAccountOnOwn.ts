@@ -5,7 +5,7 @@ import { User } from "../../models/localAuthentication/User";
 import { sendEmail } from "../../utils/EmailService";
 
 // access: private
-// method: DELETE
+// method: PUT
 // desc: delete the account of the user
 // role: client
 // payload : none

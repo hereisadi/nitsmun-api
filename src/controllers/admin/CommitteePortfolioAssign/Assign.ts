@@ -43,11 +43,9 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
         }
 
         if (event.status === "pending" || event.status === "declined") {
-          return res
-            .status(401)
-            .json({
-              error: "Event registartion confirmation is still pending",
-            });
+          return res.status(401).json({
+            error: "Event registartion confirmation is still pending",
+          });
         }
 
         if (event.assignedPortfolio !== "") {
@@ -69,7 +67,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
         if (committee) {
           event.assignedCommittee = committee;
         }
-
+        await event.save();
         return res
           .status(200)
           .json({ success: true, message: "Portfolio and committee updated" });

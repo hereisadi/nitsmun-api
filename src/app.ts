@@ -49,3 +49,4 @@ app.use("/v1/api", ApiRoutes);
 app.use("/v1/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default app;
+module.exports = app;

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { CError, CSuccess } from "../utils/ChalkCustomStyles";
-
+import dotEnv from "dotenv";
+dotEnv.config();
 const connectToDb = async () => {
   try {
     const mongodbUrl = process.env.MONGODB_URL;

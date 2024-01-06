@@ -15,9 +15,9 @@ import { demoteRole } from "../controllers/superadmin/DemoteRole";
 import { confirmRegistration } from "../controllers/admin/ConfirmRegistration";
 import { declineRegistration } from "../controllers/admin/DeclineRegistration";
 import { editProfile } from "../controllers/LocalAuthentication/EditProfile";
-import { getPendingRegistrations } from "../controllers/admin/GetPendingRegistrations";
-import { getConfirmedRegistrations } from "../controllers/admin/GetConfirmedRegistrations";
-import { getDeclinedRegistrations } from "../controllers/admin/GetDeclinedRegistrations";
+// import { getPendingRegistrations } from "../controllers/admin/GetPendingRegistrations";
+// import { getConfirmedRegistrations } from "../controllers/admin/GetConfirmedRegistrations";
+// import { getDeclinedRegistrations } from "../controllers/admin/GetDeclinedRegistrations";
 import { sendOtp } from "../controllers/LocalAuthentication/OTP/sendotp";
 import { verifyOtp } from "../controllers/LocalAuthentication/OTP/Verifyotp";
 import { deleteAnyAccount } from "../controllers/superadmin/DeleteAccount";
@@ -30,6 +30,10 @@ import { sendResetPwdLink } from "../controllers/LocalAuthentication/magiclink/S
 import { resetPwd } from "../controllers/LocalAuthentication/magiclink/resetpassword";
 import { getScheduledAccount } from "../controllers/superadmin/getScheduledAccount";
 import { accountExists } from "../controllers/AccountExistence/AccountExists";
+import { getIndividualAccount } from "../controllers/superadmin/IndividualAccount";
+import { getIndividualEventRegistration } from "../controllers/admin/IndividualEvent";
+import { getRegistrations } from "../controllers/admin/GetRegistrations";
+import { assignPortfolios } from "../controllers/admin/CommitteePortfolioAssign/Assign";
 
 const router = express.Router();
 
@@ -111,11 +115,23 @@ const AdminAllEventHandler = (req: Request, res: Response) => {
 };
 router.get("/admin/getregistered/:eventName", AdminAllEventHandler);
 
+// individual registered event
+const AdminIndividualEventHandler = (req: Request, res: Response) => {
+  getIndividualEventRegistration(req as AuthRequest, res);
+};
+router.get("/admin/reg/:eventID", AdminIndividualEventHandler);
+
 // fetch all created accounts for superadmin side
 const SuperAdminAllSignedUpHandler = (req: Request, res: Response) => {
   getAllCreatedAccounts(req as AuthRequest, res);
 };
 router.get("/superadmin/getallaccounts", SuperAdminAllSignedUpHandler);
+
+// fetch individual account for superadmin side
+const SuperAdminIndividualAccount = (req: Request, res: Response) => {
+  getIndividualAccount(req as AuthRequest, res);
+};
+router.get("/superadmin/getprofile/:accountID", SuperAdminIndividualAccount);
 
 // elevate user role to admin's route
 const ElevateRoleHandler = (req: Request, res: Response) => {
@@ -141,44 +157,47 @@ const DeclineRegHandler = (req: Request, res: Response) => {
 };
 router.put("/decline/reg", DeclineRegHandler);
 
+// assign the portfolios
+const AssignPortfolioHandler = (req: Request, res: Response) => {
+  assignPortfolios(req as AuthRequest, res);
+};
+router.put("/admin/assign/portfolios", AssignPortfolioHandler);
+
 // edit profile
 const EditProfileHandler = (req: Request, res: Response) => {
   editProfile(req as AuthRequest, res);
 };
 router.put("/all/edit/profile", EditProfileHandler);
 
-// fetch pending registration
-const FetchPendingEventRegistrationsHandler = (req: Request, res: Response) => {
-  getPendingRegistrations(req as AuthRequest, res);
+// fetch registration bases on status and eventName
+const FetchRegistrationsHandler = (req: Request, res: Response) => {
+  getRegistrations(req as AuthRequest, res);
 };
-router.get(
-  "/admin/getpendingreg/:eventName",
-  FetchPendingEventRegistrationsHandler
-);
+router.get("/admin/getregs/:eventName/:status", FetchRegistrationsHandler);
 
-// fetch confirmed registration
-const FetchConfirmedEventRegistrationsHandler = (
-  req: Request,
-  res: Response
-) => {
-  getConfirmedRegistrations(req as AuthRequest, res);
-};
-router.get(
-  "/admin/getconfirmedreg/:eventName",
-  FetchConfirmedEventRegistrationsHandler
-);
+// // fetch confirmed registration
+// const FetchConfirmedEventRegistrationsHandler = (
+//   req: Request,
+//   res: Response
+// ) => {
+//   getConfirmedRegistrations(req as AuthRequest, res);
+// };
+// router.get(
+//   "/admin/getconfirmedreg/:eventName",
+//   FetchConfirmedEventRegistrationsHandler
+// );
 
-// fetch declined registration
-const FetchDeclinedEventRegistrationsHandler = (
-  req: Request,
-  res: Response
-) => {
-  getDeclinedRegistrations(req as AuthRequest, res);
-};
-router.get(
-  "/admin/getdeclinedreg/:eventName",
-  FetchDeclinedEventRegistrationsHandler
-);
+// // fetch declined registration
+// const FetchDeclinedEventRegistrationsHandler = (
+//   req: Request,
+//   res: Response
+// ) => {
+//   getDeclinedRegistrations(req as AuthRequest, res);
+// };
+// router.get(
+//   "/admin/getdeclinedreg/:eventName",
+//   FetchDeclinedEventRegistrationsHandler
+// );
 
 //send otp
 router.post("/sendotp", sendOtp);
@@ -202,7 +221,7 @@ router.get("/superadmin/getscheduleddeleteaccount", getScheduledDeleteAccount);
 const DeleteAnyAccountByClientHandler = (req: Request, res: Response) => {
   deleteAccountOnOwn(req as AuthRequest, res);
 };
-router.delete("/client/deleteaccount", DeleteAnyAccountByClientHandler);
+router.put("/client/deleteaccount", DeleteAnyAccountByClientHandler);
 
 // contact us form
 const ContactUsHandler = (req: Request, res: Response) => {

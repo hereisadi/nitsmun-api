@@ -154,7 +154,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
     } catch (e) {
       console.error(e);
       CError("Failed to register");
-      res
+      return res
         .status(500)
         .json({ error: "Something went wrong on the server side" });
     }

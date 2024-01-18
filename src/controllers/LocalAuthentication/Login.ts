@@ -86,8 +86,8 @@ export const login = async (req: Request, res: Response) => {
         CSuccess("login successful");
       } catch (error) {
         CError("Failed to log in");
-        res.status(500).json({ error: "Failed to log in" });
         console.error(error);
+        return res.status(500).json({ error: "Failed to log in" });
       }
     });
   });

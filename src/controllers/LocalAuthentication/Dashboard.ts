@@ -72,7 +72,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
       }
     } catch (error) {
       CError("Failed to load user details");
-      res.status(500).json({ error: "Failed to load user details" });
+      return res.status(500).json({ error: "Failed to load user details" });
     }
   });
 };

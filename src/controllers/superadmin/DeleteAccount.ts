@@ -65,7 +65,7 @@ export const deleteAnyAccount = (req: AuthRequest, res: Response) => {
       }
     } catch (error) {
       console.error(error);
-      res
+      return res
         .status(500)
         .json({ error: "Something went wrong on the server side" });
     }

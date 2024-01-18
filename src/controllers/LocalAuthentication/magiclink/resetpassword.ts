@@ -83,6 +83,6 @@ export const resetPwd = async (req: Request, res: Response) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server Error", success: false });
+    return res.status(500).json({ error: "Server Error", success: false });
   }
 };

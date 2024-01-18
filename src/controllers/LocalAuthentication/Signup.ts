@@ -180,8 +180,8 @@ export const signup = async (req: Request, res: Response) => {
       }
     } catch (error) {
       CError("Failed to sign up");
-      res.status(500).json({ error: "Failed to sign up" });
       console.error(error);
+      return res.status(500).json({ error: "Failed to sign up" });
     }
   });
 };

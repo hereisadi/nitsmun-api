@@ -9,8 +9,9 @@ import { yp } from "../../models/events/yp";
 // method: GET
 // desc: get all events
 // role: superadmin || admin
-// payload : eventName as params
+// payload : none
 // route: /admin/getregistered/:eventName
+// desc: get all registered events
 
 export const getAllEvents = (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
@@ -29,10 +30,7 @@ export const getAllEvents = (req: AuthRequest, res: Response) => {
       const { role } = user;
 
       if (role === "admin" || role === "superadmin") {
-        const { eventName } = req.params;
-        console.log(eventName);
-
-        const allSuchEvents = await yp.find({ eventName: eventName });
+        const allSuchEvents = await yp.find({});
 
         res.status(200).json({
           success: true,

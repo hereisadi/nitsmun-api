@@ -76,7 +76,7 @@ export const editProfile = (req: AuthRequest, res: Response) => {
       });
     } catch (e) {
       console.error(e);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: "Something went wrong on the server side, profile update failed",
       });

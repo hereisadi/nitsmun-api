@@ -57,6 +57,9 @@ export const elevateRole = async (req: AuthRequest, res: Response) => {
       }
     } catch (e) {
       console.error(e);
+      return res.status(500).json({
+        error: "Internal server error",
+      });
     }
   });
 };

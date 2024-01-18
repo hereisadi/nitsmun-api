@@ -113,7 +113,7 @@ router.get("/client/allevents", AllEventsHandler);
 const AdminAllEventHandler = (req: Request, res: Response) => {
   getAllEvents(req as AuthRequest, res);
 };
-router.get("/admin/getregistered/:eventName", AdminAllEventHandler);
+router.get("/admin/getregistered", AdminAllEventHandler);
 
 // individual registered event
 const AdminIndividualEventHandler = (req: Request, res: Response) => {

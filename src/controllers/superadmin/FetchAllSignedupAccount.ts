@@ -42,6 +42,9 @@ export const getAllCreatedAccounts = async (
       }
     } catch (e) {
       console.error(e);
+      return res.status(500).json({
+        error: "Something went wrong",
+      });
     }
   });
 };

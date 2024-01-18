@@ -62,7 +62,7 @@ export const sendLink = async (req: AuthRequest, res: Response) => {
       });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Server Error", success: false });
+      return res.status(500).json({ error: "Server Error", success: false });
     }
   });
 };

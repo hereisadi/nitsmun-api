@@ -54,6 +54,8 @@ const userSchema = new mongoose.Schema<UserDocument>({
   },
   photo: {
     type: String,
+    default:
+      "https://res.cloudinary.com/dlx4meooj/image/upload/v1702566250/user_1_hntf9t.jpg?_s=public-apps",
   },
   password: {
     type: String,

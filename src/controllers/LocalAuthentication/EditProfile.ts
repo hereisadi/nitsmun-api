@@ -56,15 +56,15 @@ export const editProfile = (req: AuthRequest, res: Response) => {
         user.password = newHashedPassword;
       }
 
-      if (newName) {
+      if (newName && newName !== user.name) {
         user.name = newName;
       }
 
-      if (phone) {
+      if (phone && phone !== user.phone) {
         user.phone = phone;
       }
 
-      if (photo) {
+      if (photo && photo !== user.photo) {
         user.photo = photo;
       }
 

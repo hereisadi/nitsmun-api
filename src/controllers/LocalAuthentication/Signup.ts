@@ -6,7 +6,6 @@ import { CError } from "../../utils/ChalkCustomStyles";
 // import { sanitizeInput, Globals } from "../../utils/Sanitize";
 import { isEmail } from "../../utils/isEmail";
 import { isEmailOfNITS } from "../../utils/isNITSEmail";
-import { isvalidScholarID } from "../../utils/isScholarID";
 import { sendEmail } from "../../utils/EmailService";
 // Globals();
 
@@ -96,60 +95,58 @@ export const signup = async (req: Request, res: Response) => {
         year = year?.toString().trim();
 
         isEmailOfNITS(req, res, async () => {
-          isvalidScholarID(req, res, async () => {
-            const existingUser = await User.findOne({ email: Semail });
-            if (existingUser) {
-              return res.status(400).json({ error: "Email already exists" });
-            }
+          const existingUser = await User.findOne({ email: Semail });
+          if (existingUser) {
+            return res.status(400).json({ error: "Email already exists" });
+          }
 
-            // checking if institute email already exists
-            const existingInstituteEmail = await User.findOne({
-              instituteEmail,
+          // checking if institute email already exists
+          const existingInstituteEmail = await User.findOne({
+            instituteEmail,
+          });
+
+          if (existingInstituteEmail) {
+            return res.status(400).json({
+              error: "this Institute email already exists",
             });
+          }
 
-            if (existingInstituteEmail) {
-              return res.status(400).json({
-                error: "this Institute email already exists",
-              });
-            }
+          // checking if scholar id already exists
+          const existingScholarID = await User.findOne({
+            scholarID,
+          });
 
-            // checking if scholar id already exists
-            const existingScholarID = await User.findOne({
-              scholarID,
+          if (existingScholarID) {
+            return res.status(400).json({
+              error: "this Scholar ID already exists",
             });
+          }
 
-            if (existingScholarID) {
-              return res.status(400).json({
-                error: "this Scholar ID already exists",
-              });
-            }
+          const user = new User({
+            name: Sname,
+            email: Semail,
+            password: hashedPassword,
+            isStudentOfNITS,
+            instituteEmail,
+            scholarID,
+            branch,
+            year,
+            phone: Sphone,
+          });
 
-            const user = new User({
-              name: Sname,
-              email: Semail,
-              password: hashedPassword,
-              isStudentOfNITS,
-              instituteEmail,
-              scholarID,
-              branch,
-              year,
-              phone: Sphone,
-            });
+          await user.save();
 
-            await user.save();
-
-            // send welcome email to the user
-            sendEmail(
-              Semail,
-              "Welcome to NITSMUN",
-              `Hi ${Sname},\n
+          // send welcome email to the user
+          sendEmail(
+            Semail,
+            "Welcome to NITSMUN",
+            `Hi ${Sname},\n
               Welcome to NITSMUN. We are glad to have you on board. \n
               \n\n Team NITSMUN`
-            );
-            res
-              .status(200)
-              .json({ message: "User account created successfully" });
-          });
+          );
+          res
+            .status(200)
+            .json({ message: "User account created successfully" });
         });
       }
       // for outside nits student

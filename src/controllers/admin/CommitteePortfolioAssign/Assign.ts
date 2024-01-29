@@ -73,7 +73,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
           event.email,
           "[NITSMUN] Committee and Portfolio assigned",
           `Hi ${event.name},\n
-          We are glad to inform you that you have been assigned ${committee} and ${committee} for the ${event.eventName}. \n Thanks,
+          We are glad to inform you that you have been assigned ${committee} and ${portfolio} for the ${event.eventName}. \n Thanks,
           \n\n Team NITSMUN`
         );
         return res

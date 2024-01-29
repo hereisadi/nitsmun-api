@@ -171,7 +171,7 @@ export const signup = async (req: Request, res: Response) => {
 
         sendEmail(
           Semail,
-          "Wlcome to NITSMUN",
+          "Welcome to NITSMUN",
           `Hi ${Sname},\n
           Welcome to NITSMUN. We are glad to have you on board. \n
           \n\n Team NITSMUN`

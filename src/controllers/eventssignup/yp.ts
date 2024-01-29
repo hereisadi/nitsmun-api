@@ -61,7 +61,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { email, name, role, isVerified, isStudentOfNITS } = user;
+      const { email, name, role, isVerified, isStudentOfNITS, phone } = user;
 
       // check if that email exists for that eventName if yes, then decline the registration
       const existingSignup = await yp.findOne({ email, eventName });
@@ -95,6 +95,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               name,
               email,
               payment,
+              phone,
               eventName,
               college,
               previousMunExperience,
@@ -122,6 +123,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               eventName,
               college: "NIT Silchar",
               previousMunExperience,
+              phone,
               scholarid: user.scholarID,
               batch: user.year,
               committeePreference,

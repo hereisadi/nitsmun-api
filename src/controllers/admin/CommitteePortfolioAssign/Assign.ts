@@ -3,6 +3,7 @@ import { AuthRequest } from "../../../utils/types/AuthRequest";
 import { verifyToken } from "../../../middlewares/VerifyToken";
 import { User } from "../../../models/localAuthentication/User";
 import { yp } from "../../../models/events/yp";
+import { sendEmail } from "../../../utils/EmailService";
 
 // PUT
 // payload : eventID, portfolio, committee
@@ -68,6 +69,13 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
           event.assignedCommittee = committee;
         }
         await event.save();
+        sendEmail(
+          event.email,
+          "[NITSMUN] Committee and Portfolio assigned",
+          `Hi ${event.name},\n
+          We are glad to inform you that you have been assigned ${committee} and ${committee} for the ${event.eventName}. \n Thanks,
+          \n\n Team NITSMUN`
+        );
         return res
           .status(200)
           .json({ success: true, message: "Portfolio and committee updated" });

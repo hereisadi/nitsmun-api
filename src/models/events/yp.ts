@@ -7,6 +7,7 @@ type UserDocument = Document & {
   batch: string;
   payment: string;
   name: string;
+  phone: string;
   email: string;
   regsiteredat: string;
   status: string;
@@ -36,6 +37,9 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   college: {
     type: String,
     required: true,
+  },
+  phone: {
+    type: String,
   },
 
   // for nits guys only starts here

@@ -46,7 +46,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         return res.status(400).json({ error: "invalid committee selection" });
       }
 
-      if (portfolioPreference.length < 1 || portfolioPreference.length > 3) {
+      if (portfolioPreference.length < 1 || portfolioPreference.length > 9) {
         return res.status(400).json({ error: "invalid portfolio selection" });
       }
 

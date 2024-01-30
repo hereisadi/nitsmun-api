@@ -83,13 +83,17 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       if (role === "client") {
         if (isVerified === true) {
           if (isStudentOfNITS === false) {
-            let { college } = req.body as { college: string };
-            if (!college) {
+            let { college, accomodation } = req.body as {
+              college: string;
+              accomodation: string;
+            };
+            if (!college || !accomodation) {
               return res
                 .status(400)
                 .json({ error: "Please fill all required fields" });
             }
             college = college?.trim();
+            accomodation = accomodation?.trim();
 
             const eventsignup = new yp({
               name,
@@ -101,6 +105,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               previousMunExperience,
               committeePreference,
               portfolioPreference,
+              accomodation,
             });
 
             await eventsignup.save();

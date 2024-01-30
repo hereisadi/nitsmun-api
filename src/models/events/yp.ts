@@ -18,6 +18,7 @@ type UserDocument = Document & {
   portfolioPreference: [string];
   assignedPortfolio: string;
   assignedCommittee: string;
+  accomodation: string;
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
@@ -54,6 +55,9 @@ const ypSchema = new mongoose.Schema<UserDocument>({
   previousMunExperience: {
     type: String,
     required: true,
+  },
+  accomodation: {
+    type: String,
   },
   committeePreference: {
     type: [String],

@@ -9,9 +9,9 @@ import moment from "moment-timezone";
 
 export const verifyToken = async (req: Request, res: Response) => {
   try {
-    const { token } = req.body as { token: string };
+    const { token } = req.params as { token: string };
     if (!token) {
-      return res.status(400).json({ message: "Token is missing" });
+      return res.status(400).json({ error: "Token is missing" });
     }
 
     const user = await User.findOne({
@@ -19,9 +19,12 @@ export const verifyToken = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
+    if (user.isVerified === true) {
+      return res.status(400).json({ error: "email already verified" });
+    }
     // console.log(user)
 
     const tokenExpiresAt = user.tokenExpiresAt as string;

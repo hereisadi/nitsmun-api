@@ -27,6 +27,10 @@ export const sendLink = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
+      if (user.isVerified === true) {
+        return res.status(400).json({ error: "Email already verified" });
+      }
+
       const Email = user.email.toString().trim() as string;
       const name = user.name.toString().trim() as string;
 

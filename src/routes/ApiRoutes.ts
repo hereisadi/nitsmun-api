@@ -95,7 +95,7 @@ const sendLinkHandler = (req: Request, res: Response) => {
   sendLink(req as AuthRequest, res);
 };
 router.post("/sendlink", sendLinkHandler);
-router.put("/verifytoken", verifyToken); // client wil send token as payload in body
+router.put("/verifytoken/:token", verifyToken); // client wil send token as payload in body
 
 // yp event regsitration
 const ypControllerHandler = (req: Request, res: Response) => {

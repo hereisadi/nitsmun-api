@@ -27,25 +27,19 @@ export const verifyToken = async (req: Request, res: Response) => {
     }
     // console.log(user)
 
-    const tokenExpiresAt = user.tokenExpiresAt as string;
-    const currentTime = moment
-      .tz("Asia/Kolkata")
-      .format("DD-MM-YY h:mma") as string;
+    // const tokenExpiresAt = user.tokenExpiresAt as string;
+    // const currentTime = moment
+    //   .tz("Asia/Kolkata")
+    //   .format("DD-MM-YY h:mma") as string;
 
-    if (currentTime > tokenExpiresAt) {
-      return res.status(400).json({
-        error: "token expired. please try again later",
-      });
-    } else {
-      user.isVerified = true;
-      user.token = undefined;
-      user.tokenExpiresAt = undefined;
-      await user.save();
-      return res.status(200).json({
-        success: true,
-        message: "Email verified successfully",
-      });
-    }
+    user.isVerified = true;
+    user.token = undefined;
+    user.tokenExpiresAt = undefined;
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Server Error", success: false });

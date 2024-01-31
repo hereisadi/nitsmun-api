@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../../../models/localAuthentication/User";
 import moment from "moment-timezone";
+import { sendEmail } from "../../../utils/EmailService";
 
 // access: public
 // method: PUT
@@ -36,6 +37,11 @@ export const verifyToken = async (req: Request, res: Response) => {
     user.token = undefined;
     user.tokenExpiresAt = undefined;
     await user.save();
+    sendEmail(
+      user.email,
+      "[NITSMUN] Email Verified",
+      `Hi ${user.name},\nYour email has been Verified, and now you can register for the Annual Conference 2024.\n\n https://nitsmun.in/applynow \n\n Team NITSMUN`
+    );
     return res.status(200).json({
       success: true,
       message: "Email verified successfully",

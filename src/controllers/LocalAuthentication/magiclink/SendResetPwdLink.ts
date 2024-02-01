@@ -52,7 +52,7 @@ export const sendResetPwdLink = async (req: Request, res: Response) => {
       if (!token || !tokenExpiresAt) {
         return res
           .status(400)
-          .json({ message: "Either token or tokenExpiresAt is missing" });
+          .json({ error: "Either token or tokenExpiresAt is missing" });
       }
 
       user.token = token;

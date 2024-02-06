@@ -31,6 +31,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           scholarID,
           branch,
           year,
+          photo,
           _id,
           phone,
         } = user;
@@ -40,6 +41,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           email,
           phone,
           isStudentOfNITS,
+          photo,
           instituteEmail,
           year,
           branch,

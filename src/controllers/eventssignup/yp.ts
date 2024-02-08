@@ -40,7 +40,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         isGroupRegistration: boolean;
       };
 
-      const { inviteToken, grpLeaderEmail, memberEmail, eventNameIn, grpName } =
+      let { inviteToken, grpLeaderEmail, memberEmail, eventNameIn, grpName } =
         req.params as {
           inviteToken: string;
           grpLeaderEmail: string;
@@ -49,8 +49,16 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           grpName: string;
         };
 
+      inviteToken = inviteToken.trim();
+      memberEmail = memberEmail.trim().toLowerCase();
+      grpLeaderEmail = grpLeaderEmail.trim().toLowerCase();
+      eventNameIn = decodeURIComponent(eventNameIn);
+      grpName = decodeURIComponent(grpName);
+
       if (inviteToken === undefined || inviteToken === null) {
+        // ! THIS REGISTRATION ONLY FOR NON INVITE LINKS
         if (isGroupRegistration === false) {
+          // ! INDIVIDUAL REGISTRATION
           if (!payment || !eventName || !previousMunExperience) {
             return res
               .status(400)
@@ -145,12 +153,10 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                 Congratulations, You have successfully registered for the ${eventName}. \n
                 \n\n Team NITSMUN`
                 );
-                res
-                  .status(200)
-                  .json({
-                    message: "Event registration completed",
-                    eventsignup,
-                  });
+                res.status(200).json({
+                  message: "Event registration completed",
+                  eventsignup,
+                });
               } else if (isStudentOfNITS === true) {
                 const eventsignup = new yp({
                   name,
@@ -176,12 +182,10 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                 Congratulations, You have successfully registered for the ${eventName}. \n
                 \n\n Team NITSMUN`
                 );
-                res
-                  .status(200)
-                  .json({
-                    message: "Event registration completed",
-                    eventsignup,
-                  });
+                res.status(200).json({
+                  message: "Event registration completed",
+                  eventsignup,
+                });
               }
             } else {
               return res.status(401).json({
@@ -219,11 +223,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           }
 
           if (grpMembers.length < 1) {
-            return res
-              .status(400)
-              .json({
-                error: "Minimum 1 member is required for group registration",
-              });
+            return res.status(400).json({
+              error: "Minimum 1 member is required for group registration",
+            });
           }
 
           // check if the teamMember has signed up or not
@@ -239,11 +241,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           for (let i = 0; i < grpMembers.length; i++) {
             const member = await User.findOne({ email: grpMembers[i] });
             if (member?.isVerified === false) {
-              return res
-                .status(400)
-                .json({
-                  error: `email ${grpMembers[i]} has not verified their email`,
-                });
+              return res.status(400).json({
+                error: `email ${grpMembers[i]} has not verified their email`,
+              });
             }
           }
           // check if grpMember has already registered as individual registration
@@ -254,11 +254,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               isGroupRegistration: false,
             });
             if (member) {
-              return res
-                .status(400)
-                .json({
-                  error: `${grpMembers[i]} has already registered for the event`,
-                });
+              return res.status(400).json({
+                error: `${grpMembers[i]} has already registered for the event`,
+              });
             }
           }
 
@@ -287,11 +285,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                 const teamMembers = filteredInvite[0].grpMembers;
                 for (let i = 0; i < grpMembers.length; i++) {
                   if (!teamMembers.includes(grpMembers[i])) {
-                    return res
-                      .status(400)
-                      .json({
-                        error: `${grpMembers[i]} has not registered for the event`,
-                      });
+                    return res.status(400).json({
+                      error: `${grpMembers[i]} has not registered for the event`,
+                    });
                   }
                 }
               }
@@ -304,11 +300,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               });
 
               if (existingRegistration) {
-                return res
-                  .status(400)
-                  .json({
-                    error: "You have already registered for this event",
-                  });
+                return res.status(400).json({
+                  error: "You have already registered for this event",
+                });
               } else {
                 if (user.isStudentOfNITS === false) {
                   let { college, accomodation } = req.body as {

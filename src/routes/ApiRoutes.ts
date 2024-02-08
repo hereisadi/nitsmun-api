@@ -34,6 +34,7 @@ import { getIndividualAccount } from "../controllers/superadmin/IndividualAccoun
 import { getIndividualEventRegistration } from "../controllers/admin/IndividualEvent";
 import { getRegistrations } from "../controllers/admin/GetRegistrations";
 import { assignPortfolios } from "../controllers/admin/CommitteePortfolioAssign/Assign";
+import { sendInvite } from "../controllers/eventssignup/invite/SendInvite";
 
 const router = express.Router();
 
@@ -235,5 +236,8 @@ router.post("/sendresetpwdlink", sendResetPwdLink);
 router.put("/resetpassword", resetPwd);
 
 router.get("/accounttest/:email", accountExists);
-
+const sendInviteHandler = (req: Request, res: Response) => {
+  sendInvite(req as AuthRequest, res);
+};
+router.post("/sendinvite", sendInviteHandler);
 export default router;

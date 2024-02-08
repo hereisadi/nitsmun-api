@@ -19,6 +19,7 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
         return res.status(404).json({ error: "User not found" });
       }
 
+      // ! don't separate eventName with space
       let { email, eventName, grpName } = req.body as {
         email: string;
         eventName: string;
@@ -45,7 +46,9 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
 
       email = email.trim().toLowerCase();
       eventName = eventName.trim();
+      // eventName = encodeURIComponent(eventName)
       grpName = grpName.trim();
+      // grpName = encodeURIComponent(grpName)
 
       if (email === user.email) {
         return res.status(400).json({ error: "grpLeader can't be the member" });
@@ -57,12 +60,16 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
       }
       const uniqueToken = crypto.randomBytes(48).toString("hex") as string;
 
-      const emailLink = `http://nitsmun.in/registration/invite/${user.email}/to/${email}/token?/${uniqueToken}/${eventName}/${grpName}`;
+      const emailLink = `https://nitsmun.in/registration/invite/${
+        user.email
+      }/to/${email}/token/${uniqueToken}/${encodeURIComponent(
+        eventName
+      )}/${encodeURIComponent(grpName)}`;
 
       sendEmail(
         email,
         `[NITSMUN] Invitation to join ${grpName} by the ${user.name}`,
-        `${user.name} has invited you to join their group:${grpName} for the ${eventName} in the group: ${grpName}.\nClick on below link to register for the ${eventName} through the invite link:\n ${emailLink}\n\nThanks,\nTeam NITSMUN`
+        `Hi ${inviteLinkUser.name},\n${user.name} has invited you to join their group:${grpName} for the NITSMUN event: ${eventName} in the group: ${grpName}.\nClick on below link to register for the ${eventName} through the invite link:\n ${emailLink}\n\nThanks,\nTeam NITSMUN`
       );
 
       const filteredInvite = inviteLinkUser.inviteLink.filter(

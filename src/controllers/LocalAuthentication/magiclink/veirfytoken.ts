@@ -40,7 +40,7 @@ export const verifyToken = async (req: Request, res: Response) => {
     sendEmail(
       user.email,
       "[NITSMUN] Email Verified",
-      `Hi ${user.name},\nYour email has been Verified, and now you can register for the Annual Conference 2024.\n\n https://nitsmun.in/applynow \n\n Team NITSMUN`
+      `Hi ${user.name},\nYour email has been Verified, and now you can register for the Annual Conference 2024.\n\n https://nitsmun.in/applynow\n\n\nFor any general query Contact: Ronak Jain (+918402822820)\nFor any registration related issues Contact: Aditya (+918210610167) \n\n Team NITSMUN`
     );
     return res.status(200).json({
       success: true,

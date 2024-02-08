@@ -19,6 +19,11 @@ type UserDocument = Document & {
   assignedPortfolio: string;
   assignedCommittee: string;
   accomodation: string;
+  grpName: string;
+  grpLeaderEmail: string;
+  grpMembers: [string];
+  isGroupRegistration: boolean;
+  memberEventRegistrationStatus: string;
 };
 
 const ypSchema = new mongoose.Schema<UserDocument>({
@@ -90,6 +95,11 @@ const ypSchema = new mongoose.Schema<UserDocument>({
     type: String,
     default: "",
   },
+  isGroupRegistration: Boolean,
+  grpName: String,
+  grpLeaderEmail: String,
+  grpMembers: [String],
+  memberEventRegistrationStatus: String,
 });
 
 ypSchema.index({ eventName: 1, email: 1 }, { unique: true });

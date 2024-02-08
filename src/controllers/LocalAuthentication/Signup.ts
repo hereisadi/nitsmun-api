@@ -141,7 +141,7 @@ export const signup = async (req: Request, res: Response) => {
             Semail,
             "Welcome to NITSMUN",
             `Hi ${Sname},\n
-              Welcome to NITSMUN. We are glad to have you on board. \n
+              Welcome to NITSMUN. We are glad to have you on board.\n\nFor any general query Contact: Ronak Jain (+918402822820)\nFor any registration related issues Contact: Aditya (+918210610167)
               \n\n Team NITSMUN`
           );
           res

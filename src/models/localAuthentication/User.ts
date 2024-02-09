@@ -29,6 +29,11 @@ type UserDocument = Document & {
     uniqueToken: string | undefined;
     memberEmail: string | undefined;
   }[];
+  sendInviteToWhom: {
+    eventName: string;
+    grpName: string;
+    toWhom: Array<string>;
+  }[];
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -105,6 +110,13 @@ const userSchema = new mongoose.Schema<UserDocument>({
       eventName: { type: String },
       uniqueToken: { type: String },
       memberEmail: { type: String },
+    },
+  ],
+  sendInviteToWhom: [
+    {
+      eventName: { type: String },
+      grpName: { type: String },
+      toWhom: [String],
     },
   ],
 });

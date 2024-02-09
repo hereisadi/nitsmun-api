@@ -55,7 +55,8 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       eventNameIn = decodeURIComponent(eventNameIn);
       grpName = decodeURIComponent(grpName);
 
-      if (inviteToken === undefined || inviteToken === null) {
+      // if (inviteToken === undefined || inviteToken === null) {
+      if (!inviteToken) {
         // ! THIS REGISTRATION ONLY FOR NON INVITE LINKS
         if (isGroupRegistration === false) {
           // ! INDIVIDUAL REGISTRATION

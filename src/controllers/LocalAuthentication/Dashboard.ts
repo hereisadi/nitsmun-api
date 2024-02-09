@@ -34,6 +34,9 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           photo,
           _id,
           phone,
+          sendInviteToWhom,
+          registrationInvite,
+          inviteLink,
         } = user;
         res.status(200).json({
           _id,
@@ -49,6 +52,9 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           role,
           isVerified,
           deleteAccount,
+          sendInviteToWhom,
+          registrationInvite,
+          inviteLink,
         });
       } else if (user.isStudentOfNITS === false) {
         const {
@@ -61,6 +67,9 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           isStudentOfNITS,
           deleteAccount,
           isVerified,
+          sendInviteToWhom,
+          registrationInvite,
+          inviteLink,
         } = user;
         res.status(200).json({
           _id,
@@ -72,6 +81,9 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
           role,
           isVerified,
           deleteAccount,
+          sendInviteToWhom,
+          registrationInvite,
+          inviteLink,
         });
       }
     } catch (error) {

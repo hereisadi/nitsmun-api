@@ -58,6 +58,14 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
       if (!inviteLinkUser) {
         return res.status(404).json({ error: "User not found, signup first" });
       }
+
+      const whoSendTheInvite = await User.find({ email: user.email });
+      if (!whoSendTheInvite) {
+        return res
+          .status(404)
+          .json({ error: "whoSendTheInvite User not found, signup first" });
+      }
+
       const uniqueToken = crypto.randomBytes(48).toString("hex") as string;
 
       const emailLink = `https://nitsmun.in/registration/invite/${
@@ -97,6 +105,23 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
 
         inviteLinkUser.inviteLink.push(newInvite);
         await inviteLinkUser.save();
+      }
+
+      const thatArray = whoSendTheInvite[0].sendInviteToWhom.filter(
+        (item) => item.eventName === eventName && item.grpName === grpName
+      );
+
+      if (thatArray.length > 0) {
+        thatArray[0].toWhom.push(email);
+        await whoSendTheInvite[0].save();
+      } else {
+        const newInvite = {
+          eventName: eventName,
+          grpName: grpName,
+          toWhom: [email],
+        };
+        whoSendTheInvite[0].sendInviteToWhom.push(newInvite);
+        await whoSendTheInvite[0].save();
       }
       res
         .status(200)

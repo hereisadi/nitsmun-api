@@ -112,13 +112,21 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
       );
 
       if (thatArray.length > 0) {
-        thatArray[0].toWhom.push(email);
+        const detailsToPush = {
+          email: email,
+          hasAccepted: "no",
+        };
+        thatArray[0].toWhom.push(detailsToPush);
         await whoSendTheInvite[0].save();
       } else {
+        const detailsToPush = {
+          email: email,
+          hasAccepted: "no",
+        };
         const newInvite = {
           eventName: eventName,
           grpName: grpName,
-          toWhom: [email],
+          toWhom: [detailsToPush],
         };
         whoSendTheInvite[0].sendInviteToWhom.push(newInvite);
         await whoSendTheInvite[0].save();

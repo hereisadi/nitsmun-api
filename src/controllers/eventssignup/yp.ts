@@ -457,6 +457,11 @@ export const ypController = async (req: AuthRequest, res: Response) => {
             invite.grpName === grpName
         );
 
+        const thatArrayWhichContainAllInvite =
+          grpLeader.sendInviteToWhom.filter(
+            (item) => item.eventName === eventNameIn && item.grpName === grpName
+          );
+
         const filtertedArrayOfTeamMembers = grpLeader.registrationInvite.filter(
           (invite) =>
             invite.eventName === eventNameIn && invite.grpName === grpName
@@ -470,6 +475,31 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           if (uniqueToken !== inviteToken) {
             return res.status(400).json({ error: "Invalid token" });
           } else {
+            if (thatArrayWhichContainAllInvite?.length > 0) {
+              const thatEmailArray = [];
+              for (
+                let i = 0;
+                i < thatArrayWhichContainAllInvite[0].toWhom.length;
+                i++
+              ) {
+                thatEmailArray.push(
+                  thatArrayWhichContainAllInvite[0].toWhom[i]
+                );
+              }
+              console.log(thatEmailArray[0]);
+              if (
+                thatEmailArray[0].hasAccepted === "no" &&
+                thatEmailArray[0].email === memberEmail
+              ) {
+                thatEmailArray[0].hasAccepted = "yes";
+              } else {
+                return res
+                  .status(400)
+                  .json({ error: "You have already accepted the invite" });
+              }
+              await grpLeader.save();
+            }
+
             if (filtertedArrayOfTeamMembers.length > 0) {
               if (
                 !filtertedArrayOfTeamMembers[0].grpMembers.includes(memberEmail)

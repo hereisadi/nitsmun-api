@@ -349,6 +349,24 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                   \n\n Team NITSMUN`
                   );
 
+                  // change the value of  memberEventRegistrationStatus to "confirmed, as leader registered",
+                  for (let i = 0; i < grpMembers.length; i++) {
+                    const member = await yp.findOne({
+                      email: grpMembers[i],
+                      eventName,
+                      grpName: GrpName,
+                    });
+                    if (
+                      member &&
+                      member.memberEventRegistrationStatus ===
+                        "done but not confirmed"
+                    ) {
+                      member.memberEventRegistrationStatus =
+                        "confirmed, as leader registered";
+                      await member.save();
+                    }
+                  }
+
                   // send email to grpMembers
                   for (let i = 0; i < grpMembers.length; i++) {
                     sendEmail(
@@ -397,6 +415,24 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                     )}
                   \n\n Team NITSMUN`
                   );
+
+                  // change the value of  memberEventRegistrationStatus to "confirmed, as leader registered",
+                  for (let i = 0; i < grpMembers.length; i++) {
+                    const member = await yp.findOne({
+                      email: grpMembers[i],
+                      eventName,
+                      grpName: GrpName,
+                    });
+                    if (
+                      member &&
+                      member.memberEventRegistrationStatus ===
+                        "done but not confirmed"
+                    ) {
+                      member.memberEventRegistrationStatus =
+                        "confirmed, as leader registered";
+                      await member.save();
+                    }
+                  }
 
                   // send email to grpMembers
                   for (let i = 0; i < grpMembers.length; i++) {

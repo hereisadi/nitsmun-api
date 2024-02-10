@@ -54,7 +54,7 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
         return res.status(400).json({ error: "grpLeader can't be the member" });
       }
 
-      const inviteLinkUser = await User.findOne({ email });
+      const inviteLinkUser = await User.findOne({ email: email });
       if (!inviteLinkUser) {
         return res.status(404).json({ error: "User not found, signup first" });
       }

@@ -25,7 +25,11 @@ export const accountExists = async (req: Request, res: Response) => {
         return res.status(200).json({
           message: "no account found",
         });
-      } else {
+      }
+      // else if(user?.isVerified===false){
+      //   return res.status(200).json({message:"verify your email first"})
+      // }
+      else {
         return res.status(200).json({
           message: "accounts exists",
         });

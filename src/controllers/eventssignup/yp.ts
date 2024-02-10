@@ -24,6 +24,7 @@ import { sendEmail } from "../../utils/EmailService";
 export const ypController = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
     try {
+      // console.log(req.body)
       const {
         payment,
         eventName,
@@ -41,7 +42,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
       };
 
       let { inviteToken, grpLeaderEmail, memberEmail, eventNameIn, grpName } =
-        req.params as {
+        req.body as {
           inviteToken: string;
           grpLeaderEmail: string;
           memberEmail: string;
@@ -49,9 +50,9 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           grpName: string;
         };
 
-      inviteToken = inviteToken.trim();
-      memberEmail = memberEmail.trim().toLowerCase();
-      grpLeaderEmail = grpLeaderEmail.trim().toLowerCase();
+      inviteToken = inviteToken?.trim();
+      memberEmail = memberEmail?.trim().toLowerCase();
+      grpLeaderEmail = grpLeaderEmail?.trim().toLowerCase();
       eventNameIn = decodeURIComponent(eventNameIn);
       grpName = decodeURIComponent(grpName);
 
@@ -60,7 +61,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
         // ! THIS REGISTRATION ONLY FOR NON INVITE LINKS
         if (isGroupRegistration === false) {
           // ! INDIVIDUAL REGISTRATION
-          if (!payment || !eventName || !previousMunExperience) {
+          if (!eventName || !previousMunExperience) {
             return res
               .status(400)
               .json({ error: "Please fill all required fields" });
@@ -223,7 +224,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
             return res.status(400).json({ error: "grpName is missing" });
           }
 
-          if (grpMembers.length < 1) {
+          if (grpMembers?.length < 1) {
             return res.status(400).json({
               error: "Minimum 1 member is required for group registration",
             });
@@ -361,7 +362,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                   }
                   return res.status(200).json({
                     success: true,
-                    message: "Registered successfully",
+                    message: "Event registration completed",
                   });
                 } else if (user.isStudentOfNITS === true) {
                   const eventsignup = new yp({
@@ -410,7 +411,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                   }
                   return res.status(200).json({
                     success: true,
-                    message: "Registered successfully",
+                    message: "Event registration completed",
                   });
                 }
               }
@@ -436,7 +437,13 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           return res.status(404).json({ error: "User not found" });
         }
 
-        if (!grpLeaderEmail || !memberEmail || !eventNameIn || !grpName) {
+        if (
+          !grpLeaderEmail ||
+          !memberEmail ||
+          !eventNameIn ||
+          !grpName ||
+          !inviteToken
+        ) {
           return res.status(404).json({ error: "where are the details" });
         }
 
@@ -482,9 +489,14 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                 i < thatArrayWhichContainAllInvite[0].toWhom.length;
                 i++
               ) {
-                thatEmailArray.push(
-                  thatArrayWhichContainAllInvite[0].toWhom[i]
-                );
+                if (
+                  thatArrayWhichContainAllInvite[0].toWhom[i].email ===
+                  memberEmail
+                ) {
+                  thatEmailArray.push(
+                    thatArrayWhichContainAllInvite[0].toWhom[i]
+                  );
+                }
               }
               console.log(thatEmailArray[0]);
               if (
@@ -559,7 +571,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               `[NITSMUN] ${eventName} Registration Completed`,
               `Hi ${user.name},\n
               Congratulations, You have successfully registered for the ${eventName} under the group: ${grpName} \n
-              Your registration is currently provisional and will be confirmed only when group leader completes his/her registration.\n\nYour group name is: ${grpName} and group leader is: ${grpLeader}
+              Your registration is currently provisional and will be confirmed only when group leader completes his/her registration.\n\nYour group name is: ${grpName} and group leader is: ${grpLeaderEmail}
               \n You will receive another email, when your group leader completes his registration.\n\nFor any general query Contact: Ronak Jain (+918402822820)\nFor any registration related issues Contact: Aditya (+918210610167)
               \n\n Team NITSMUN`
             );
@@ -591,18 +603,23 @@ export const ypController = async (req: AuthRequest, res: Response) => {
               `[NITSMUN] ${eventName} Registration Completed`,
               `Hi ${user.name},\n
               Congratulations, You have successfully registered for the ${eventName} under the group: ${grpName} \n
-              Your registration is currently provisional and will be confirmed only when group leader completes his/her registration.\n\nYour group name is: ${grpName} and group leader is: ${grpLeader}
+              Your registration is currently provisional and will be confirmed only when group leader completes his/her registration.\n\nYour group name is: ${grpName} and group leader is: ${grpLeaderEmail}
               \n You will receive another email, when your group leader completes his/her registration.\n\nFor any general query Contact: Ronak Jain (+918402822820)\nFor any registration related issues Contact: Aditya (+918210610167)
               \n\n Team NITSMUN`
             );
+
+            return res.status(200).json({
+              success: true,
+              message: "Event registration completed",
+            });
           }
         } else {
           return res.status(401).json({ error: "verify email first" });
         }
-        return res.status(200).json({
-          success: true,
-          message: "invite link verified and member added to teamLeader's team",
-        });
+        // return res.status(200).json({
+        //   success: true,
+        //   message: "Event registration completed",
+        // });
       }
     } catch (e) {
       console.error(e);

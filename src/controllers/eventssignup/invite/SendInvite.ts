@@ -4,6 +4,7 @@ import { verifyToken } from "../../../middlewares/VerifyToken";
 import { User } from "../../../models/localAuthentication/User";
 import crypto from "crypto";
 import { sendEmail } from "../../../utils/EmailService";
+import { yp } from "../../../models/events/yp";
 
 export const sendInvite = async (req: AuthRequest, res: Response) => {
   verifyToken(req, res, async () => {
@@ -57,6 +58,24 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
       const inviteLinkUser = await User.findOne({ email: email });
       if (!inviteLinkUser) {
         return res.status(404).json({ error: "User not found, signup first" });
+      }
+
+      if (inviteLinkUser.isVerified === false) {
+        return res
+          .status(400)
+          .json({
+            error: "user not verified, ask them to verify their email first",
+          });
+      }
+
+      const hasAlreadyRegisteredInTheEvent = await yp.findOne({
+        email,
+        eventName,
+      });
+      if (hasAlreadyRegisteredInTheEvent) {
+        return res
+          .status(400)
+          .json({ error: "user has already registered for the event" });
       }
 
       const whoSendTheInvite = await User.find({ email: user.email });

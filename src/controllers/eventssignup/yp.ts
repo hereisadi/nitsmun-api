@@ -200,7 +200,7 @@ export const ypController = async (req: AuthRequest, res: Response) => {
                 "Admins and SuperAdmins are not allowed to register for an event",
             });
           }
-        } else {
+        } else if (isGroupRegistration === true) {
           // ! THIS IS GRP LEADER REGISTRATION, GRP MEMBERS WILL REGISTER AS INDIVIDUAL REGISTRATION
           // group registration of event goes here.
 
@@ -270,7 +270,10 @@ export const ypController = async (req: AuthRequest, res: Response) => {
           }
           const EventName = eventName?.trim();
           const GrpName = grpName?.trim();
-
+          // console.log(isGroupRegistration)
+          // console.log(EventName)
+          // console.log(GrpName)
+          // console.log(grpMembers)
           if (user.isVerified === true) {
             if (
               isGroupRegistration === true &&
@@ -296,11 +299,11 @@ export const ypController = async (req: AuthRequest, res: Response) => {
 
               // find existing registration
               const existingRegistration = await yp.findOne({
-                grpLeaderEmail: user.email,
+                email: user.email,
                 eventName: EventName,
                 grpName: GrpName,
               });
-
+              // console.log(existingRegistration)
               if (existingRegistration) {
                 return res.status(400).json({
                   error: "You have already registered for this event",

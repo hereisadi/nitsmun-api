@@ -61,11 +61,9 @@ export const sendInvite = async (req: AuthRequest, res: Response) => {
       }
 
       if (inviteLinkUser.isVerified === false) {
-        return res
-          .status(400)
-          .json({
-            error: "user not verified, ask them to verify their email first",
-          });
+        return res.status(400).json({
+          error: "user not verified, ask them to verify their email first",
+        });
       }
 
       const hasAlreadyRegisteredInTheEvent = await yp.findOne({

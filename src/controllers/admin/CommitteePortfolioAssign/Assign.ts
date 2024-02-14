@@ -76,9 +76,12 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
         const unhrcWpGrp = "https://chat.whatsapp.com/IwQiJMKGfrFJta8QrAS5bd";
         const ipcWpGrp = "https://chat.whatsapp.com/Fo9tj6KaRqH9iuy5IvwiNV";
 
-        const ibBgGuide = "ib";
-        const mahabharatBgGuide = "maha";
-        const unhrcBgGuide = "unhrc";
+        const ibBgGuide =
+          "https://drive.google.com/file/d/1zli9QADoLhmT-s9PYAj5r0b--SOR3MhH/view?usp=drive_link";
+        const mahabharatBgGuide =
+          "https://drive.google.com/file/d/1mmSdEnWMFdaPOwlO5IvmBg3uER9O8boE/view";
+        const unhrcBgGuide =
+          "https://drive.google.com/file/d/1q4V4wiAMEzeG84k9z8CGsIzWL3ew3F8X/view?usp=drive_link";
         const ipcBgGuide = "ipc";
 
         if (committee === "Mahabharat" || committee === "mahabharat") {

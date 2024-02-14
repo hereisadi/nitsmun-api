@@ -16,6 +16,27 @@ type UserDocument = Document & {
   scholarID: string;
   year: string;
   photo: string;
+  registrationInvite: {
+    eventName: string;
+    grpName: string;
+    hasRegisteredForTheEvent: string;
+    grpMembers: Array<string>;
+  }[];
+  inviteLink: {
+    grpLeaderEmail: string | undefined;
+    eventName: string | undefined;
+    grpName: string | undefined;
+    uniqueToken: string | undefined;
+    memberEmail: string | undefined;
+  }[];
+  sendInviteToWhom: {
+    eventName: string;
+    grpName: string;
+    toWhom: {
+      email: string | undefined;
+      hasAccepted: string | undefined;
+    }[];
+  }[];
 };
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -77,6 +98,35 @@ const userSchema = new mongoose.Schema<UserDocument>({
     type: Boolean,
     default: false,
   },
+  registrationInvite: [
+    {
+      eventName: String,
+      grpName: String,
+      hasRegisteredForTheEvent: String,
+      grpMembers: [String],
+    },
+  ],
+  inviteLink: [
+    {
+      grpLeaderEmail: { type: String },
+      grpName: { type: String },
+      eventName: { type: String },
+      uniqueToken: { type: String },
+      memberEmail: { type: String },
+    },
+  ],
+  sendInviteToWhom: [
+    {
+      eventName: { type: String },
+      grpName: { type: String },
+      toWhom: [
+        {
+          email: { type: String },
+          hasAccepted: { type: String },
+        },
+      ],
+    },
+  ],
 });
 
 userSchema.index({ email: 1 }, { unique: true });

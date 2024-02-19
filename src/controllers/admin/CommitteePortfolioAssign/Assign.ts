@@ -89,7 +89,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
             event.email,
             "[NITSMUN] Committee and Portfolio assigned",
             `Hi ${event.name},\n
-            We are glad to inform you that you have been assigned ${committee} committee and ${portfolio} portfolio for the ${event.eventName}. \n\n Please join the Hastinapur Special Council/Mahabharat Whatsapp group: ${mahabharatWpGrp} \n\n Below is the Background guide of the Hastinapur Special Council/Mahabharat Committee: \n${mahabharatBgGuide} \n Thanks,
+            We are glad to inform you that you have been assigned ${committee}/Hastinapur Special Council committee and ${portfolio} portfolio for the ${event.eventName}. \n\n Please join the Hastinapur Special Council/Mahabharat Whatsapp group: ${mahabharatWpGrp} \n\n Below is the Background guide of the Hastinapur Special Council/Mahabharat Committee: \n${mahabharatBgGuide} \n Thanks,
             \n\n Team NITSMUN`
           );
         } else if (

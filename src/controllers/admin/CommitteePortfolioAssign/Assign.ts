@@ -82,7 +82,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
           "https://drive.google.com/file/d/1mmSdEnWMFdaPOwlO5IvmBg3uER9O8boE/view";
         const unhrcBgGuide =
           "https://drive.google.com/file/d/1q4V4wiAMEzeG84k9z8CGsIzWL3ew3F8X/view?usp=drive_link";
-        const ipcBgGuide = "ipc";
+        // const ipcBgGuide = "ipc";
 
         if (committee === "Mahabharat" || committee === "mahabharat") {
           sendEmail(
@@ -113,7 +113,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
             event.email,
             "[NITSMUN] Committee and Portfolio assigned",
             `Hi ${event.name},\n
-            We are glad to inform you that you have been assigned ${committee} committee and ${portfolio} portfolio for the ${event.eventName}. \n\n Please join the IPC Committee Whatsapp group: ${ipcWpGrp} \n\n Below is the Background guide of the IPC Committee: \n${ipcBgGuide} \n Thanks,
+            We are glad to inform you that you have been assigned ${committee} committee and ${portfolio} portfolio for the ${event.eventName}. \n\n Please join the IPC Committee Whatsapp group: ${ipcWpGrp} \n Thanks,
             \n\n Team NITSMUN`
           );
         } else if (

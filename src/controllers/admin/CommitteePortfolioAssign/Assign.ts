@@ -79,7 +79,7 @@ export const assignPortfolios = async (req: AuthRequest, res: Response) => {
         const ibBgGuide =
           "https://drive.google.com/file/d/1zli9QADoLhmT-s9PYAj5r0b--SOR3MhH/view?usp=drive_link";
         const mahabharatBgGuide =
-          "https://drive.google.com/file/d/1mmSdEnWMFdaPOwlO5IvmBg3uER9O8boE/view";
+          "https://drive.google.com/file/d/19-6zDrWK1m4-ehJciQxeFJZdRKSA3Um-/view";
         const unhrcBgGuide =
           "https://drive.google.com/file/d/1q4V4wiAMEzeG84k9z8CGsIzWL3ew3F8X/view?usp=drive_link";
         // const ipcBgGuide = "ipc";

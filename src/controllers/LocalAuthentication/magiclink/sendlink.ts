@@ -4,7 +4,7 @@ import { AuthRequest } from "../../../utils/types/AuthRequest";
 import crypto from "crypto";
 import { User } from "../../../models/localAuthentication/User";
 import moment from "moment-timezone";
-import { sendEmail } from "../../../utils/EmailService";
+// import { sendEmail } from "../../../utils/EmailService";
 
 // access: private
 // method: POST
@@ -54,14 +54,15 @@ export const sendLink = async (req: AuthRequest, res: Response) => {
         process.env.website as string
       }/verifyemail/${token}`;
 
-      sendEmail(
-        Email,
-        "[NITSMUN] Verify Email",
-        `Hi ${name}\nClick on this link to verify your email: ${verifyEmailLink} \n Link is valid for 60 minutes \n\n Team NITSMUN`
-      );
+      // sendEmail(
+      //   Email,
+      //   "[NITSMUN] Verify Email",
+      //   `Hi ${name}\nClick on this link to verify your email: ${verifyEmailLink} \n Link is valid for 60 minutes \n\n Team NITSMUN`
+      // );
 
       return res.status(200).json({
         success: true,
+        verifyEmailLink,
         message: "Verification link sent successfully",
       });
     } catch (err) {
